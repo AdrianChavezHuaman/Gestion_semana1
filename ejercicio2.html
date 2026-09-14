@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Organización de la fiesta de 80 años · Familia Ayarza</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+  :root{
+    --page:#fffbf5;
+    --paper:#ffffff;
+    --ink:#0f172a;
+    --muted:#7c2d12;
+    --border:#fde4c8;
+
+    --brand:#ea580c;         /* naranja vivo */
+    --brand-dark:#7c2d12;    /* terracota oscuro */
+    --brand-2:#fb923c;       /* naranja claro */
+    --brand-soft:#fed7aa;
+    --brand-bg:#fff4e6;
+    --brand-bg2:#ffe8d1;
+
+    --teal:#0f766e;          /* contraste inicio/fin */
+    --teal-bg:#ccfbf1;
+    --teal-soft:#5eead4;
+
+    --rose:#be123c;          /* contraste decisión */
+    --rose-bg:#fff1f2;
+    --rose-soft:#fecdd3;
+
+    --arrow:#a16207;
+    --shadow:0 2px 8px rgba(124,45,18,.08);
+    --shadow-lg:0 14px 44px rgba(234,88,12,.28);
+  }
+
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(1000px 460px at 50% -220px, #ffe1c2 0%, transparent 70%),
+      var(--page);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1040px;margin:0 auto;padding:36px 20px 90px;}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,#7c2d12 0%,#ea580c 50%,#f97316 80%,#fb923c 100%);
+    color:#fff;border-radius:24px;padding:40px 38px;
+    box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+  }
+  .hero::after{content:"";position:absolute;right:-70px;top:-70px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.14);}
+  .hero::before{content:"";position:absolute;right:90px;bottom:-100px;width:200px;height:200px;border-radius:50%;background:rgba(15,118,110,.35);}
+  .eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#ffedd5;margin-bottom:10px;}
+  .hero h1{font-size:2.05rem;line-height:1.15;letter-spacing:-.5px;margin-bottom:10px;}
+  .hero .sub{color:#ffedd5;font-size:1rem;max-width:680px;position:relative;z-index:1;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;list-style:none;position:relative;z-index:1;}
+  .chips li{
+    background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+    padding:6px 13px;border-radius:999px;font-size:.83rem;font-weight:600;backdrop-filter:blur(4px);
+  }
+
+  /* FICHA */
+  .ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:24px;}
+  .ficha .item{background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);}
+  .ficha .item h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;font-weight:800;}
+  .ficha .item p{font-size:.9rem;color:#431407;}
+
+  /* SECCIONES */
+  section{margin-top:44px;}
+  .sec-title{display:flex;align-items:center;gap:11px;font-size:1.2rem;letter-spacing:-.3px;margin-bottom:6px;}
+  .sec-title .bar{width:5px;height:22px;border-radius:3px;background:linear-gradient(var(--brand),var(--brand-2));}
+  .sec-desc{color:var(--muted);font-size:.9rem;margin-bottom:18px;}
+
+  /* TABLA */
+  .table-wrap{background:var(--paper);border:1px solid var(--border);border-radius:16px;overflow:auto;box-shadow:var(--shadow);}
+  table{width:100%;border-collapse:collapse;min-width:820px;font-size:.9rem;}
+  thead th{
+    background:linear-gradient(var(--brand-bg2),var(--brand-soft));
+    text-align:left;padding:13px 15px;
+    font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--brand-dark);font-weight:800;border-bottom:1px solid var(--brand-soft);white-space:nowrap;
+  }
+  tbody td{padding:13px 15px;border-bottom:1px solid #fbead6;vertical-align:top;color:#431407;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:#fffaf3;}
+  tbody tr:hover{background:var(--brand-bg);}
+  td.num{font-weight:800;color:var(--brand);width:52px;}
+  td.act{font-weight:700;color:var(--ink);}
+
+  /* LEYENDA */
+  .legend{display:flex;flex-wrap:wrap;gap:20px;margin-bottom:16px;font-size:.85rem;font-weight:700;color:var(--brand-dark);}
+  .legend span{display:flex;align-items:center;gap:8px;}
+  .legend i{width:18px;height:18px;display:inline-block;}
+  .legend .l-start{background:var(--teal);border-radius:999px;}
+  .legend .l-proc{background:var(--brand-bg);border:2px solid var(--brand);border-radius:4px;}
+  .legend .l-dec{background:var(--rose-bg);border:2px solid var(--rose);transform:rotate(45deg);width:15px;height:15px;border-radius:3px;}
+
+  /* DIAGRAMA */
+  .fc-wrap{
+    background:var(--paper);border:1px solid var(--border);border-radius:20px;
+    padding:20px 14px;box-shadow:var(--shadow);overflow-x:auto;overflow-y:hidden;
+  }
+  .fc-svg{display:block;width:100%;height:auto;min-width:860px;font-family:inherit;}
+
+  .shape{filter:url(#softShadow);}
+  .shape.start,.shape.end{fill:var(--teal);stroke:var(--teal);}
+  .shape.process{fill:var(--brand-bg);stroke:var(--brand);stroke-width:2.2;}
+  .shape.decision{fill:var(--rose-bg);stroke:var(--rose);stroke-width:2.2;}
+  .shape.side{fill:var(--teal-bg);stroke:var(--teal);stroke-width:2;stroke-dasharray:6 5;}
+
+  .node-text{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;text-align:center;padding:0 6px;}
+  .node-text .t{font-weight:800;font-size:15px;line-height:1.2;color:var(--ink);}
+  .node-text .s{font-size:12.5px;line-height:1.25;color:var(--brand-dark);margin-top:3px;opacity:.85;font-weight:600;}
+  .node-text.start .t,.node-text.end .t{color:#fff;font-size:16px;letter-spacing:.3px;}
+  .node-text.start .s,.node-text.end .s{color:rgba(255,255,255,.9);}
+  .node-text.decision .t{color:#881337;font-size:14.5px;}
+  .node-text.decision .s{color:#9f1239;opacity:.85;}
+  .node-text.side .t{color:#115e59;font-size:14px;}
+  .node-text.side .s{color:#0f766e;}
+
+  .arrow{fill:none;stroke:var(--arrow);stroke-width:2;stroke-linecap:round;}
+  .arrow.loop{stroke:var(--teal);stroke-dasharray:7 6;}
+  .arrow-label{font-size:12.5px;font-weight:800;fill:var(--brand-dark);}
+  .arrow-label.yes{fill:var(--teal);}
+  .arrow-label.no{fill:var(--rose);}
+
+  footer{margin-top:56px;text-align:center;font-size:.8rem;color:var(--muted);border-top:1px solid var(--border);padding-top:22px;}
+
+  @media (max-width:640px){
+    .hero{padding:28px 22px;border-radius:18px;}
+    .hero h1{font-size:1.5rem;}
+    .wrap{padding:22px 14px 60px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Gestión de procesos · Ejercicio práctico</p>
+    <h1>Fiesta de 80 años de la abuela Rosa Mercedes</h1>
+    <p class="sub">
+      Caso real: <strong>Renato Ayarza</strong>, 24 años, nieto preferido.
+      La familia le encargó organizar la fiesta de cumpleaños de su abuela
+      <strong>Rosa Mercedes</strong>, que cumple 80 y vive en Barranco.
+    </p>
+    <ul class="chips">
+      <li>📅 Sábado, 7:00 p.m.</li>
+      <li>💰 Aporte familiar: S/ 2 400</li>
+      <li>📍 Salón del club de Barranco</li>
+      <li>🎯 3 hijos, 8 nietos, 12 bisnietos</li>
+    </ul>
+  </header>
+
+  <div class="ficha">
+    <div class="item"><h3>Responsable general</h3><p>Renato Ayarza, con apoyo de su mamá Susana, su tía Eva y su tío Gastón.</p></div>
+    <div class="item"><h3>Insumos clave</h3><p>Lista de invitados, presupuesto, local, catering, torta, música, decoración, álbum de fotos.</p></div>
+    <div class="item"><h3>Resultado esperado</h3><p>Abuela celebrada con toda la familia, sin contratiempos y con recuerdos grabados.</p></div>
+  </div>
+
+  <section>
+    <h2 class="sec-title"><span class="bar"></span>Actividades del proceso</h2>
+    <p class="sec-desc">Cada paso con su responsable, lo que necesita y lo que deja como resultado.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>N°</th><th>Actividad</th><th>Responsable</th><th>¿Qué se requiere?</th><th>¿Qué se obtiene?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="act">Confirmar fecha y hora con la familia</td><td>Renato</td><td>Agenda de los tíos y disponibilidad del local</td><td>Fecha cerrada: sábado 7 p.m.</td></tr>
+          <tr><td class="num">2</td><td class="act">Armar la lista de invitados</td><td>Renato + Susana</td><td>Datos de hijos, nietos, bisnietos y amistades</td><td>Lista con 60 invitados confirmados</td></tr>
+          <tr><td class="num">3</td><td class="act">Definir presupuesto y aportes</td><td>Renato + tíos Gastón y Eva</td><td>Ingresos de cada familia</td><td>Fondo común de S/ 2 400</td></tr>
+          <tr><td class="num">4</td><td class="act">Reservar el salón del club</td><td>Renato</td><td>Contacto del club, anticipo</td><td>Salón reservado y contrato firmado</td></tr>
+          <tr><td class="num">5</td><td class="act">Contratar catering criollo</td><td>Renato + doña Chabuca</td><td>Menú, número de invitados</td><td>Menú cerrado: causa, ají de gallina, anticuchos</td></tr>
+          <tr><td class="num">6</td><td class="act">Encargar la torta de 80 años</td><td>Renato</td><td>Diseño, sabor, fecha de entrega</td><td>Torta de tres pisos reservada</td></tr>
+          <tr><td class="num">7</td><td class="act">Contratar música y sonido</td><td>Gian Marco (primo DJ)</td><td>Equipo, playlist de la abuela</td><td>Lista musical con valses, criollas y salsa</td></tr>
+          <tr><td class="num">8</td><td class="act">Comprar decoración y flores</td><td>Eva</td><td>Globos dorados, manteles, letreros, arreglos</td><td>Salón decorado en tonos crema y dorado</td></tr>
+          <tr><td class="num">9</td><td class="act">Preparar álbum y video retrospectiva</td><td>Mario (primo fotógrafo)</td><td>Fotos antiguas escaneadas y música</td><td>Video de 5 minutos listo para proyectar</td></tr>
+          <tr><td class="num">10</td><td class="act">Enviar invitaciones</td><td>Renato</td><td>Diseño digital y lista confirmada</td><td>Invitaciones enviadas por WhatsApp y físicas</td></tr>
+          <tr><td class="num">11</td><td class="act">Confirmar asistencias</td><td>Renato</td><td>Llamadas y mensajes a pendientes</td><td>Confirmación final de los 60 invitados</td></tr>
+          <tr><td class="num">12</td><td class="act">Comprar el regalo familiar</td><td>Susana + Gastón</td><td>Presupuesto aparte, grabado</td><td>Placa de plata con dedicatoria</td></tr>
+          <tr><td class="num">13</td><td class="act">Día del evento: montaje</td><td>Renato + primos</td><td>Llegar 3 horas antes al salón</td><td>Mesas, sillas y decoración listas</td></tr>
+          <tr><td class="num">14</td><td class="act">Recibir, cenar, brindar y cantar</td><td>Toda la familia</td><td>Abuela en el salón, discurso preparado</td><td>Abuela feliz y fotos para el recuerdo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title"><span class="bar"></span>Diagrama de flujo del proceso</h2>
+    <p class="sec-desc">Óvalo = inicio/fin · Rectángulo = actividad · Rombo = decisión. Las flechas indican la secuencia.</p>
+
+    <div class="legend">
+      <span><i class="l-start"></i> Inicio / Fin</span>
+      <span><i class="l-proc"></i> Actividad</span>
+      <span><i class="l-dec"></i> Decisión</span>
+    </div>
+
+    <div class="fc-wrap">
+      <div id="flowchart"></div>
+    </div>
+  </section>
+
+  <footer>Ejercicio de gestión de procesos · Caso ilustrativo de la familia Ayarza</footer>
+</div>
+
+<script>
+/* ============ DATOS DEL PROCESO ============ */
+const steps = [
+  { type:'start',    title:'Inicio',                              sub:'La abuela Rosa Mercedes cumple 80' },
+  { type:'process',  title:'Confirmar fecha con la familia',      sub:'Sábado 7 p.m. · club de Barranco' },
+  { type:'process',  title:'Armar la lista de invitados',         sub:'3 hijos, 8 nietos, 12 bisnietos' },
+  { type:'process',  title:'Definir presupuesto y aportes',       sub:'Fondo común de S/ 2 400' },
+  { type:'process',  title:'Reservar el salón del club',          sub:'Anticipo y contrato firmado' },
+  { type:'process',  title:'Contratar catering criollo',          sub:'Menú con doña Chabuca' },
+  { type:'process',  title:'Encargar la torta de 80 años',        sub:'Tres pisos, crema y dorado' },
+  { type:'process',  title:'Contratar música y sonido',           sub:'Gian Marco arma la playlist' },
+  { type:'process',  title:'Comprar decoración y flores',         sub:'Eva coordina globos y manteles' },
+  { type:'process',  title:'Preparar álbum y video',              sub:'Mario escanea fotos antiguas' },
+  { type:'process',  title:'Enviar invitaciones',                 sub:'Digitales y físicas' },
+  { type:'decision', title:'¿Confirmaron todos los invitados?',
+    noTitle:'Llamar a los pendientes', noSub:'Renato insiste por WhatsApp',
+    loopBackTo: 10 },
+  { type:'process',  title:'Comprar el regalo familiar',          sub:'Placa de plata grabada' },
+  { type:'process',  title:'Día del evento: montaje',             sub:'3 horas antes, primos ayudan' },
+  { type:'process',  title:'Recibir a los invitados',             sub:'Renato y primos en la puerta' },
+  { type:'process',  title:'Cena y brindis de honor',             sub:'Discurso del tío Gastón' },
+  { type:'decision', title:'¿Todo salió como se planeó?',
+    noTitle:'Ajustar sobre la marcha', noSub:'Música, sillas, tiempos',
+    loopBackTo: 15 },
+  { type:'process',  title:'Pastel, discurso y fotos',            sub:'Momento cumbre de la noche' },
+  { type:'end',      title:'Fin',                                 sub:'Abuela feliz, recuerdos para siempre' }
+];
+
+/* ============ MOTOR DEL DIAGRAMA ============ */
+(function(){
+  const NODE = {
+    start:    { w:260, h:64,  shape:'pill'    },
+    end:      { w:260, h:64,  shape:'pill'    },
+    process:  { w:380, h:80,  shape:'rect'    },
+    decision: { w:380, h:186, shape:'diamond' }
+  };
+  const MAIN_X = 340, SIDE_X = 780, SIDE_W = 240, SIDE_H = 86;
+  const GAP = 54, PAD = 36;
+
+  let y = PAD;
+  const nodes = steps.map(s => {
+    const c = NODE[s.type];
+    const n = { ...s, w:c.w, h:c.h, shape:c.shape, x: MAIN_X - c.w/2, y, cx: MAIN_X, cy: y + c.h/2 };
+    y += c.h + GAP;
+    return n;
+  });
+  const H = y - GAP + PAD;
+
+  let defs = `
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#a16207"/>
+      </marker>
+      <marker id="arLoop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/>
+      </marker>
+      <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#7c2d12" flood-opacity="0.16"/>
+      </filter>
+    </defs>`;
+
+  let shapes = '', texts = '', arrows = '';
+
+  nodes.forEach(n => {
+    if (n.shape === 'pill')
+      shapes += `<rect class="shape ${n.type}" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="${n.h/2}"/>`;
+    else if (n.shape === 'rect')
+      shapes += `<rect class="shape process" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="14"/>`;
+    else if (n.shape === 'diamond')
+      shapes += `<polygon class="shape decision" points="${n.cx},${n.y} ${n.x+n.w},${n.cy} ${n.cx},${n.y+n.h} ${n.x},${n.cy}"/>`;
+
+    const tw = n.shape === 'diamond' ? 210 : n.w - 40;
+    const th = n.shape === 'diamond' ? 116 : n.h - 12;
+    texts += `
+      <foreignObject x="${n.cx - tw/2}" y="${n.cy - th/2}" width="${tw}" height="${th}">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="node-text ${n.type}">
+          <div class="t">${n.title}</div>
+          ${n.sub ? `<div class="s">${n.sub}</div>` : ''}
+        </div>
+      </foreignObject>`;
+  });
+
+  for (let i = 0; i < nodes.length - 1; i++){
+    const a = nodes[i], b = nodes[i+1];
+    const x1 = a.cx, y1 = a.y + a.h, x2 = b.cx, y2 = b.y - 4;
+    arrows += `<path class="arrow" d="M ${x1} ${y1} L ${x2} ${y2}" marker-end="url(#ar)"/>`;
+    if (a.type === 'decision')
+      arrows += `<text class="arrow-label yes" x="${x1 + 12}" y="${(y1+y2)/2 + 5}">Sí</text>`;
+  }
+
+  nodes.forEach(n => {
+    if (n.type !== 'decision' || n.loopBackTo == null) return;
+    const target = nodes[n.loopBackTo];
+    const sx = SIDE_X - SIDE_W/2;
+    const sy = n.cy - SIDE_H/2;
+
+    shapes += `<rect class="shape side" x="${sx}" y="${sy}" width="${SIDE_W}" height="${SIDE_H}" rx="14"/>`;
+    texts += `
+      <foreignObject x="${sx+14}" y="${sy+8}" width="${SIDE_W-28}" height="${SIDE_H-16}">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="node-text side">
+          <div class="t">${n.noTitle}</div>
+          ${n.noSub ? `<div class="s">${n.noSub}</div>` : ''}
+        </div>
+      </foreignObject>`;
+
+    const ax1 = n.cx + n.w/2, ay = n.cy, ax2 = sx - 6;
+    arrows += `<path class="arrow" d="M ${ax1} ${ay} L ${ax2} ${ay}" marker-end="url(#ar)"/>`;
+    arrows += `<text class="arrow-label no" x="${(ax1+ax2)/2 - 8}" y="${ay - 9}">No</text>`;
+
+    const lx = SIDE_X, ly1 = sy, ly2 = target.cy, lx2 = target.x + target.w + 6;
+    arrows += `<path class="arrow loop" d="M ${lx} ${ly1} L ${lx} ${ly2} L ${lx2} ${ly2}" marker-end="url(#arLoop)"/>`;
+    arrows += `<text class="arrow-label no" x="${lx + 8}" y="${(ly1+ly2)/2}">repetir</text>`;
+  });
+
+  const svg = `
+    <svg class="fc-svg" viewBox="0 0 960 ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
+      ${defs}
+      <g>${arrows}</g>
+      <g>${shapes}</g>
+      <g>${texts}</g>
+    </svg>`;
+
+  document.getElementById('flowchart').innerHTML = svg;
+})();
+</script>
+</body>
+</html>
