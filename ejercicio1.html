@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proceso de compra de víveres · Alan García</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+  :root{
+    --page:#faf5ef;
+    --paper:#ffffff;
+    --ink:#3b2417;
+    --muted:#8a5a3b;
+    --border:#ecdcCB;
+
+    --brand:#8b5e34;
+    --brand-2:#b08968;
+    --brand-soft:#e6d3bd;
+    --brand-bg:#f7efe5;
+    --brand-bg2:#efe1cf;
+
+    --ok:#5c4033;
+    --warn:#b45309;
+    --warn-bg:#fdf3e3;
+    --warn-ink:#6b3d0f;
+
+    --arrow:#a89584;
+    --shadow:0 2px 8px rgba(59,36,23,.07);
+    --shadow-lg:0 14px 40px rgba(139,94,52,.20);
+  }
+
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(1000px 460px at 50% -220px, #eadbc8 0%, transparent 70%),
+      var(--page);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1000px;margin:0 auto;padding:36px 20px 90px;}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,#3b2417 0%,#8b5e34 55%,#b08968 100%);
+    color:#fff;border-radius:24px;padding:38px 36px;
+    box-shadow:var(--shadow-lg);position:relative;overflow:hidden;
+  }
+  .hero::after{content:"";position:absolute;right:-70px;top:-70px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.12);}
+  .hero::before{content:"";position:absolute;right:80px;bottom:-90px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.08);}
+  .eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#ecdcCB;margin-bottom:10px;}
+  .hero h1{font-size:2rem;line-height:1.15;letter-spacing:-.5px;margin-bottom:10px;}
+  .hero .sub{color:#ecdcCB;font-size:.98rem;max-width:640px;position:relative;z-index:1;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;list-style:none;position:relative;z-index:1;}
+  .chips li{
+    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);
+    padding:6px 13px;border-radius:999px;font-size:.83rem;font-weight:600;backdrop-filter:blur(4px);
+  }
+
+  /* FICHA */
+  .ficha{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px;}
+  .ficha .item{background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow);}
+  .ficha .item h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;font-weight:700;}
+  .ficha .item p{font-size:.9rem;color:#4a2e1c;}
+
+  /* SECCIONES */
+  section{margin-top:44px;}
+  .sec-title{display:flex;align-items:center;gap:11px;font-size:1.18rem;letter-spacing:-.3px;margin-bottom:6px;}
+  .sec-title .bar{width:5px;height:22px;border-radius:3px;background:linear-gradient(var(--brand),var(--brand-2));}
+  .sec-desc{color:var(--muted);font-size:.9rem;margin-bottom:18px;}
+
+  /* TABLA */
+  .table-wrap{background:var(--paper);border:1px solid var(--border);border-radius:16px;overflow:auto;box-shadow:var(--shadow);}
+  table{width:100%;border-collapse:collapse;min-width:760px;font-size:.9rem;}
+  thead th{
+    background:var(--brand-bg2);text-align:left;padding:13px 15px;
+    font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
+    color:#5b3a1f;font-weight:700;border-bottom:1px solid var(--brand-soft);white-space:nowrap;
+  }
+  tbody td{padding:13px 15px;border-bottom:1px solid #f3e8da;vertical-align:top;color:#4a2e1c;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:#fdfaf6;}
+  tbody tr:hover{background:var(--brand-bg);}
+  td.num{font-weight:800;color:var(--brand);width:52px;}
+  td.act{font-weight:600;color:var(--ink);}
+
+  /* LEYENDA */
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:16px;font-size:.83rem;font-weight:600;color:#5b3a1f;}
+  .legend span{display:flex;align-items:center;gap:8px;}
+  .legend i{width:16px;height:16px;display:inline-block;}
+  .legend .l-start{background:var(--ok);border-radius:999px;}
+  .legend .l-proc{background:var(--brand-bg);border:2px solid var(--brand);border-radius:4px;}
+  .legend .l-dec{background:var(--warn-bg);border:2px solid var(--warn);transform:rotate(45deg);width:14px;height:14px;border-radius:2px;}
+
+  /* DIAGRAMA */
+  .fc-wrap{
+    background:var(--paper);border:1px solid var(--border);border-radius:20px;
+    padding:18px 12px;box-shadow:var(--shadow);overflow-x:auto;overflow-y:hidden;
+  }
+  .fc-svg{display:block;width:100%;height:auto;min-width:820px;font-family:inherit;}
+
+  .shape{filter:url(#softShadow);}
+  .shape.start,.shape.end{fill:var(--ok);stroke:var(--ok);}
+  .shape.process{fill:var(--brand-bg);stroke:var(--brand);stroke-width:2;}
+  .shape.decision{fill:var(--warn-bg);stroke:var(--warn);stroke-width:2;}
+  .shape.side{fill:var(--brand-bg);stroke:var(--brand);stroke-width:2;stroke-dasharray:6 5;}
+
+  .node-text{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;text-align:center;padding:0 6px;}
+  .node-text .t{font-weight:700;font-size:15px;line-height:1.2;color:var(--ink);}
+  .node-text .s{font-size:12.5px;line-height:1.25;color:var(--muted);margin-top:3px;opacity:.9;}
+  .node-text.start .t,.node-text.end .t{color:#fff;font-size:16px;letter-spacing:.3px;}
+  .node-text.start .s,.node-text.end .s{color:rgba(255,255,255,.85);}
+  .node-text.decision .t{color:var(--warn-ink);font-size:14.5px;}
+  .node-text.decision .s{color:var(--warn-ink);opacity:.8;}
+  .node-text.side .t{color:#5b3a1f;font-size:14px;}
+  .node-text.side .s{color:#8a5a3b;}
+
+  .arrow{fill:none;stroke:var(--arrow);stroke-width:2;stroke-linecap:round;}
+  .arrow.loop{stroke:var(--brand);stroke-dasharray:7 6;}
+  .arrow-label{font-size:12.5px;font-weight:700;fill:var(--muted);}
+  .arrow-label.yes{fill:var(--ok);}
+  .arrow-label.no{fill:var(--brand);}
+
+  footer{margin-top:56px;text-align:center;font-size:.8rem;color:var(--muted);border-top:1px solid var(--border);padding-top:22px;}
+
+  @media (max-width:640px){
+    .hero{padding:28px 22px;border-radius:18px;}
+    .hero h1{font-size:1.5rem;}
+    .wrap{padding:22px 14px 60px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Gestión de procesos · Ejercicio práctico</p>
+    <h1>Compra semanal de víveres</h1>
+    <p class="sub">Caso real: <strong>Alan García</strong>, 21 años, estudiante de Ingeniería. Vive solo cerca de la universidad y hace su compra los domingos por la mañana.</p>
+    <ul class="chips">
+      <li>🕘 Domingos, 9:00 a.m.</li>
+      <li>💰 Presupuesto: S/ 80</li>
+      <li>📍 Mercado + Metro</li>
+      <li>🎯 Rendir 7 días</li>
+    </ul>
+  </header>
+
+  <div class="ficha">
+    <div class="item"><h3>Responsable</h3><p>Alan García (hace todo el proceso él solo).</p></div>
+    <div class="item"><h3>Insumos</h3><p>Despensa y nevera, lista en el celular, S/ 80, carnet del Metro, bolsas reutilizables.</p></div>
+    <div class="item"><h3>Resultado esperado</h3><p>Nevera y alacena surtidas, ticket guardado y gasto registrado.</p></div>
+  </div>
+
+  <section>
+    <h2 class="sec-title"><span class="bar"></span>Actividades del proceso</h2>
+    <p class="sec-desc">Cada paso con su responsable, lo que necesita y lo que deja como resultado.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>N°</th><th>Actividad</th><th>Responsable</th><th>¿Qué se requiere?</th><th>¿Qué se obtiene?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="act">Revisar qué quedó en la cocina</td><td>Alan</td><td>Alacena, nevera y congelador</td><td>Saber qué se acabó y qué aún sirve</td></tr>
+          <tr><td class="num">2</td><td class="act">Pensar el menú de la semana</td><td>Alan</td><td>Ideas de comidas rápidas y baratas</td><td>Menú: arroz, pollo, huevos, atún, fruta</td></tr>
+          <tr><td class="num">3</td><td class="act">Anotar la lista en el celular</td><td>Alan</td><td>Faltantes y menú definido</td><td>Lista ordenada por secciones</td></tr>
+          <tr><td class="num">4</td><td class="act">Poner un límite de gasto</td><td>Alan</td><td>Lo que le queda de la quincena</td><td>Tope máximo de S/ 80</td></tr>
+          <tr><td class="num">5</td><td class="act">Revisar precios en la app del Metro</td><td>Alan</td><td>Celular y wifi</td><td>Referencia de precios y ofertas</td></tr>
+          <tr><td class="num">6</td><td class="act">Alistar bolsas y carnet</td><td>Alan</td><td>Bolsas, carnet, efectivo y tarjeta</td><td>Mochila lista para salir</td></tr>
+          <tr><td class="num">7</td><td class="act">Ir al mercado</td><td>Alan</td><td>Caminar 10 minutos</td><td>Llega al puesto de doña Rosa</td></tr>
+          <tr><td class="num">8</td><td class="act">Comprar verduras y frutas</td><td>Alan</td><td>Vista y olfato</td><td>Tomate, cebolla, papa, plátano, limón</td></tr>
+          <tr><td class="num">9</td><td class="act">Ir al Metro</td><td>Alan</td><td>Metro o caminata</td><td>Llega al supermercado</td></tr>
+          <tr><td class="num">10</td><td class="act">Recorrer pasillos con la lista</td><td>Alan</td><td>Carrito y lista</td><td>Productos seleccionados</td></tr>
+          <tr><td class="num">11</td><td class="act">Comparar marcas y revisar vencimientos</td><td>Alan</td><td>Etiquetas y precios</td><td>Elige lo más conveniente</td></tr>
+          <tr><td class="num">12</td><td class="act">Pasar por caja y pagar</td><td>Alan / cajera</td><td>Productos y tarjeta</td><td>Ticket y compra cancelada</td></tr>
+          <tr><td class="num">13</td><td class="act">Volver a casa y guardar todo</td><td>Alan</td><td>Bolsas y espacio en nevera</td><td>Despensa ordenada</td></tr>
+          <tr><td class="num">14</td><td class="act">Revisar ticket y anotar el gasto</td><td>Alan</td><td>Ticket y app de gastos</td><td>Gasto registrado y lista para la próxima</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title"><span class="bar"></span>Diagrama de flujo del proceso</h2>
+    <p class="sec-desc">Óvalo = inicio/fin · Rectángulo = actividad · Rombo = decisión. Las flechas indican la secuencia.</p>
+
+    <div class="legend">
+      <span><i class="l-start"></i> Inicio / Fin</span>
+      <span><i class="l-proc"></i> Actividad</span>
+      <span><i class="l-dec"></i> Decisión</span>
+    </div>
+
+    <div class="fc-wrap">
+      <div id="flowchart"></div>
+    </div>
+  </section>
+
+  <footer>Ejercicio de gestión de procesos · Caso ilustrativo de Alan García</footer>
+</div>
+
+<script>
+/* ============ DATOS DEL PROCESO (edita aquí) ============ */
+const steps = [
+  { type:'start',    title:'Inicio',                       sub:'Alan se queda sin víveres en casa' },
+  { type:'process',  title:'Revisar la cocina',            sub:'Alacena, nevera y congelador' },
+  { type:'process',  title:'Pensar el menú de la semana',  sub:'Comidas rápidas y económicas' },
+  { type:'process',  title:'Anotar la lista en el celular',sub:'Ordenada por secciones' },
+  { type:'process',  title:'Poner el límite de gasto',     sub:'Máximo S/ 80' },
+  { type:'process',  title:'Revisar precios en la app',    sub:'Ofertas del Metro' },
+  { type:'process',  title:'Alistar bolsas y carnet',      sub:'Bolsas, carnet, efectivo y tarjeta' },
+  { type:'process',  title:'Ir al mercado',                sub:'Comprar verduras y frutas' },
+  { type:'process',  title:'Ir al Metro',                  sub:'Recorrer pasillos con la lista' },
+  { type:'process',  title:'Comparar marcas y vencimientos',sub:'Elegir mejor precio-calidad' },
+  { type:'decision', title:'¿Todo entra en el presupuesto?',
+    noTitle:'Ajustar el carrito', noSub:'Devolver o sustituir productos',
+    loopBackTo: 9 },
+  { type:'process',  title:'Pasar por caja y pagar',       sub:'Guardar el ticket' },
+  { type:'process',  title:'Volver a casa y guardar todo', sub:'Ordenar por vencimiento' },
+  { type:'process',  title:'Revisar ticket y anotar gasto',sub:'Registrar en la app' },
+  { type:'end',      title:'Fin',                          sub:'Despensa lista para la semana' }
+];
+
+/* ============ MOTOR DEL DIAGRAMA ============ */
+(function(){
+  const NODE = {
+    start:    { w:250, h:62,  shape:'pill'    },
+    end:      { w:250, h:62,  shape:'pill'    },
+    process:  { w:360, h:78,  shape:'rect'    },
+    decision: { w:360, h:180, shape:'diamond' }
+  };
+  const MAIN_X = 320, SIDE_X = 740, SIDE_W = 230, SIDE_H = 82;
+  const GAP = 52, PAD = 34;
+
+  let y = PAD;
+  const nodes = steps.map(s => {
+    const c = NODE[s.type];
+    const n = { ...s, w:c.w, h:c.h, shape:c.shape, x: MAIN_X - c.w/2, y, cx: MAIN_X, cy: y + c.h/2 };
+    y += c.h + GAP;
+    return n;
+  });
+  const H = y - GAP + PAD;
+
+  let defs = `
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#a89584"/>
+      </marker>
+      <marker id="arLoop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8b5e34"/>
+      </marker>
+      <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#3b2417" flood-opacity="0.14"/>
+      </filter>
+    </defs>`;
+
+  let shapes = '', texts = '', arrows = '';
+
+  nodes.forEach(n => {
+    if (n.shape === 'pill')
+      shapes += `<rect class="shape ${n.type}" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="${n.h/2}"/>`;
+    else if (n.shape === 'rect')
+      shapes += `<rect class="shape process" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="14"/>`;
+    else if (n.shape === 'diamond')
+      shapes += `<polygon class="shape decision" points="${n.cx},${n.y} ${n.x+n.w},${n.cy} ${n.cx},${n.y+n.h} ${n.x},${n.cy}"/>`;
+
+    const tw = n.shape === 'diamond' ? 200 : n.w - 40;
+    const th = n.shape === 'diamond' ? 110 : n.h - 12;
+    texts += `
+      <foreignObject x="${n.cx - tw/2}" y="${n.cy - th/2}" width="${tw}" height="${th}">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="node-text ${n.type}">
+          <div class="t">${n.title}</div>
+          ${n.sub ? `<div class="s">${n.sub}</div>` : ''}
+        </div>
+      </foreignObject>`;
+  });
+
+  for (let i = 0; i < nodes.length - 1; i++){
+    const a = nodes[i], b = nodes[i+1];
+    const x1 = a.cx, y1 = a.y + a.h, x2 = b.cx, y2 = b.y - 4;
+    arrows += `<path class="arrow" d="M ${x1} ${y1} L ${x2} ${y2}" marker-end="url(#ar)"/>`;
+    if (a.type === 'decision')
+      arrows += `<text class="arrow-label yes" x="${x1 + 12}" y="${(y1+y2)/2 + 5}">Sí</text>`;
+  }
+
+  nodes.forEach(n => {
+    if (n.type !== 'decision' || n.loopBackTo == null) return;
+    const target = nodes[n.loopBackTo];
+    const sx = SIDE_X - SIDE_W/2;
+    const sy = n.cy - SIDE_H/2;
+
+    shapes += `<rect class="shape side" x="${sx}" y="${sy}" width="${SIDE_W}" height="${SIDE_H}" rx="14"/>`;
+    texts += `
+      <foreignObject x="${sx+14}" y="${sy+8}" width="${SIDE_W-28}" height="${SIDE_H-16}">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="node-text side">
+          <div class="t">${n.noTitle}</div>
+          ${n.noSub ? `<div class="s">${n.noSub}</div>` : ''}
+        </div>
+      </foreignObject>`;
+
+    const ax1 = n.cx + n.w/2, ay = n.cy, ax2 = sx - 6;
+    arrows += `<path class="arrow" d="M ${ax1} ${ay} L ${ax2} ${ay}" marker-end="url(#ar)"/>`;
+    arrows += `<text class="arrow-label no" x="${(ax1+ax2)/2 - 8}" y="${ay - 9}">No</text>`;
+
+    const lx = SIDE_X, ly1 = sy, ly2 = target.cy, lx2 = target.x + target.w + 6;
+    arrows += `<path class="arrow loop" d="M ${lx} ${ly1} L ${lx} ${ly2} L ${lx2} ${ly2}" marker-end="url(#arLoop)"/>`;
+    arrows += `<text class="arrow-label no" x="${lx + 8}" y="${(ly1+ly2)/2}">repetir</text>`;
+  });
+
+  const svg = `
+    <svg class="fc-svg" viewBox="0 0 900 ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMin meet">
+      ${defs}
+      <g>${arrows}</g>
+      <g>${shapes}</g>
+      <g>${texts}</g>
+    </svg>`;
+
+  document.getElementById('flowchart').innerHTML = svg;
+})();
+</script>
+</body>
+</html>
