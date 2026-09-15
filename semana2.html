@@ -3,18 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestión de Procesos – Alicorp | Chavez Huaman Adrian</title>
+<title>Ficha de Trabajo – Alicorp | Chavez Huaman Adrian</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
     --verde-oliva: #6b7c5e;
-    --verde-claro: #8a9b7a;
     --verde-palido: #f0f3ec;
     --azul-gris: #5a6b7a;
     --azul-gris-oscuro: #3f4d59;
-    --beige: #e8e4da;
-    --beige-oscuro: #d4cfc2;
     --dorado-suave: #c4b58a;
     --gris-texto: #4a4a4a;
     --gris-suave: #6e6e6e;
@@ -35,7 +32,7 @@
   }
 
   .contenedor {
-    max-width: 1100px;
+    max-width: 1000px;
     margin: 0 auto;
     background: var(--blanco);
     border-radius: 12px;
@@ -48,7 +45,7 @@
   .portada {
     background: linear-gradient(135deg, var(--azul-gris-oscuro) 0%, var(--azul-gris) 100%);
     color: var(--blanco);
-    padding: 55px 50px 45px;
+    padding: 45px 50px 38px;
     position: relative;
     overflow: hidden;
   }
@@ -86,129 +83,37 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: 600;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   .portada h1 {
-    font-size: 30px;
+    font-size: 26px;
     font-weight: 700;
     line-height: 1.25;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     position: relative;
     z-index: 2;
   }
 
   .portada h2 {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 400;
     opacity: 0.9;
-    margin-bottom: 30px;
     position: relative;
     z-index: 2;
-  }
-
-  .datos-portada {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 14px;
-    position: relative;
-    z-index: 2;
-    margin-top: 25px;
-  }
-
-  .dato {
-    background: rgba(255, 255, 255, 0.08);
-    border-left: 3px solid var(--dorado-suave);
-    padding: 12px 16px;
-    border-radius: 6px;
-  }
-
-  .dato .clave {
-    display: block;
-    font-size: 11.5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.75;
-    margin-bottom: 3px;
-    font-weight: 600;
-  }
-
-  .dato .valor {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--blanco);
   }
 
   /* ---------- CONTENIDO ---------- */
   .contenido {
-    padding: 50px;
+    padding: 45px 50px;
   }
 
-  /* ---------- ÍNDICE ---------- */
-  .indice {
-    background: var(--verde-palido);
-    border: 1px solid var(--borde);
-    border-radius: 10px;
-    padding: 26px 32px;
-    margin-bottom: 45px;
-  }
-
-  .indice h3 {
-    color: var(--verde-oliva);
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-bottom: 16px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid var(--verde-oliva);
-    display: inline-block;
-  }
-
-  .indice ol {
-    list-style: none;
-    counter-reset: idx;
-    columns: 2;
-    column-gap: 40px;
-  }
-
-  .indice ol li {
-    counter-increment: idx;
-    padding: 6px 0;
-    font-size: 14.5px;
-    break-inside: avoid;
-  }
-
-  .indice ol li::before {
-    content: counter(idx, decimal-leading-zero);
-    color: var(--dorado-suave);
-    font-weight: 700;
-    margin-right: 10px;
-    font-size: 13px;
-  }
-
-  .indice a {
-    color: var(--gris-texto);
-    text-decoration: none;
-    transition: color 0.2s;
-    border-bottom: 1px dashed transparent;
-  }
-
-  .indice a:hover {
-    color: var(--verde-oliva);
-    border-bottom-color: var(--verde-oliva);
-  }
-
-  /* ---------- SECCIONES ---------- */
-  section {
-    margin-bottom: 55px;
-    scroll-margin-top: 30px;
-  }
-
-  h2.seccion {
-    font-size: 22px;
+  /* ---------- TÍTULOS DE BLOQUE ---------- */
+  h2.bloque {
+    font-size: 20px;
     color: var(--azul-gris-oscuro);
     padding-bottom: 10px;
-    margin-bottom: 22px;
+    margin-bottom: 20px;
     border-bottom: 3px solid var(--dorado-suave);
     display: flex;
     align-items: center;
@@ -216,36 +121,37 @@
     font-weight: 700;
   }
 
-  h2.seccion .num {
+  h2.bloque .num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     background: var(--azul-gris);
     color: var(--blanco);
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     flex-shrink: 0;
   }
 
   h3.sub {
-    font-size: 16.5px;
+    font-size: 15.5px;
     color: var(--azul-gris-oscuro);
-    margin: 22px 0 12px;
+    margin: 26px 0 12px;
     font-weight: 600;
   }
 
-  p {
-    margin-bottom: 14px;
+  p.intro {
+    margin-bottom: 16px;
     text-align: justify;
+    color: var(--gris-texto);
   }
 
   /* ---------- TABLAS ---------- */
   .tabla-wrap {
     overflow-x: auto;
-    margin: 18px 0 26px;
+    margin: 0 0 10px;
     border-radius: 10px;
     border: 1px solid var(--borde);
     box-shadow: 0 1px 6px rgba(90, 107, 122, 0.05);
@@ -290,10 +196,9 @@
   tbody td:first-child {
     font-weight: 600;
     color: var(--azul-gris-oscuro);
-    white-space: nowrap;
   }
 
-  /* ---------- ETIQUETAS DE TIPO ---------- */
+  /* Columna "Tipo" con etiqueta de color */
   .tipo {
     display: inline-block;
     padding: 3px 10px;
@@ -309,178 +214,12 @@
   .tipo.misional { background: #edf2e8; color: #5a6b4a; border: 1px solid #c8d8b8; }
   .tipo.apoyo { background: #f5f0e6; color: #8a7a5a; border: 1px solid #e0d8c0; }
 
-  /* ---------- MAPA DE PROCESOS ---------- */
-  .mapa {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin: 22px 0;
-  }
-
-  .nivel {
-    border-radius: 10px;
-    padding: 20px 22px;
-    border: 2px solid;
-    position: relative;
-  }
-
-  .nivel h4 {
-    font-size: 13.5px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-bottom: 14px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .nivel h4::before {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
-  .nivel.estrategico { background: #eef1f5; border-color: #c8d4de; }
-  .nivel.estrategico h4 { color: #4a5a6a; }
-
-  .nivel.misional { background: #eff4ea; border-color: #c8d8b8; }
-  .nivel.misional h4 { color: #5a6b4a; }
-
-  .nivel.apoyo { background: #f8f4ec; border-color: #e0d8c0; }
-  .nivel.apoyo h4 { color: #8a7a5a; }
-
-  .flujo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .caja {
-    background: var(--blanco);
-    padding: 9px 15px;
-    border-radius: 8px;
-    font-size: 13.5px;
-    font-weight: 600;
-    color: var(--azul-gris-oscuro);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-  }
-
-  .flecha {
-    color: var(--gris-suave);
-    opacity: 0.5;
-    font-weight: 700;
-    font-size: 15px;
-  }
-
-  /* ---------- CALLOUTS ---------- */
-  .cita {
-    border-left: 4px solid var(--dorado-suave);
-    background: #fdfcf8;
-    padding: 18px 22px;
-    border-radius: 0 8px 8px 0;
-    margin: 18px 0;
-    font-style: italic;
-    color: var(--gris-texto);
-    font-size: 15px;
-    line-height: 1.7;
-  }
-
-  /* ---------- LISTAS ---------- */
-  ul.lista, ol.lista {
-    margin: 12px 0 18px 22px;
-  }
-
-  ul.lista li, ol.lista li {
-    margin-bottom: 8px;
-    padding-left: 6px;
-  }
-
-  ul.lista li::marker { color: var(--verde-oliva); }
-
-  /* ---------- PITCH ---------- */
-  .pitch {
-    background: linear-gradient(135deg, #f3f5f0 0%, #eef1f5 100%);
-    border: 1px solid var(--borde);
-    border-radius: 10px;
-    padding: 26px 30px;
-    margin-top: 18px;
-  }
-
-  .pitch p {
-    margin-bottom: 12px;
-  }
-
-  .pitch strong { color: var(--azul-gris-oscuro); }
-
-  /* ---------- PHVA ---------- */
-  .phva-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 14px;
-    margin: 18px 0;
-  }
-
-  .phva-card {
-    background: var(--blanco);
-    border: 1px solid var(--borde);
-    border-top: 4px solid var(--azul-gris);
-    border-radius: 8px;
-    padding: 16px 18px;
-    box-shadow: 0 1px 6px rgba(90, 107, 122, 0.04);
-  }
-
-  .phva-card h5 {
-    color: var(--azul-gris-oscuro);
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 8px;
-    font-weight: 700;
-  }
-
-  .phva-card p {
-    font-size: 13.8px;
-    margin: 0;
-    text-align: left;
-  }
-
-  /* ---------- REFERENCIAS ---------- */
-  .referencias {
-    font-size: 14px;
-    line-height: 1.8;
-  }
-
-  .referencias p {
-    padding-left: 30px;
-    text-indent: -30px;
-    margin-bottom: 14px;
-    text-align: left;
-  }
-
-  .referencias a {
-    color: var(--azul-gris);
-    text-decoration: none;
-    border-bottom: 1px dotted var(--azul-gris);
-    word-break: break-all;
-    transition: color 0.2s;
-  }
-
-  .referencias a:hover {
-    color: var(--verde-oliva);
-    border-bottom-color: var(--verde-oliva);
-  }
-
   /* ---------- FOOTER ---------- */
   footer {
     background: var(--azul-gris-oscuro);
     color: #cfd6dc;
     text-align: center;
-    padding: 22px;
+    padding: 20px;
     font-size: 13px;
     letter-spacing: 0.3px;
   }
@@ -490,16 +229,13 @@
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 780px) {
     body { padding: 16px 8px; font-size: 15px; }
-    .portada { padding: 35px 24px 30px; }
-    .portada h1 { font-size: 22px; }
-    .portada h2 { font-size: 15px; }
-    .contenido { padding: 28px 20px; }
-    .indice ol { columns: 1; }
-    h2.seccion { font-size: 18px; }
-    h2.seccion .num { width: 32px; height: 32px; font-size: 14px; }
+    .portada { padding: 30px 24px 26px; }
+    .portada h1 { font-size: 20px; }
+    .portada h2 { font-size: 14px; }
+    .contenido { padding: 26px 20px; }
+    h2.bloque { font-size: 17px; }
+    h2.bloque .num { width: 30px; height: 30px; font-size: 13px; }
     thead th, tbody td { padding: 10px 12px; font-size: 13.5px; }
-    .flujo { flex-direction: column; align-items: stretch; }
-    .flecha { text-align: center; transform: rotate(90deg); }
   }
 </style>
 </head>
@@ -510,123 +246,59 @@
   <!-- ============ PORTADA ============ -->
   <header class="portada">
     <span class="etiqueta">Semana 2 · Gestión de Procesos</span>
-    <h1>Detectives de Procesos:<br>¿Qué hay detrás de una empresa exitosa?</h1>
+    <h1>Ficha de Trabajo:<br>Descubre los procesos que hacen funcionar a tu empresa</h1>
     <h2>Análisis de procesos de Alicorp S.A.A. — Sector Consumo Masivo</h2>
-
-    <div class="datos-portada">
-      <div class="dato">
-        <span class="clave">Integrante</span>
-        <span class="valor">Chavez Huaman Adrian</span>
-      </div>
-      <div class="dato">
-        <span class="clave">Empresa analizada</span>
-        <span class="valor">Alicorp S.A.A.</span>
-      </div>
-      <div class="dato">
-        <span class="clave">Sector</span>
-        <span class="valor">Consumo Masivo</span>
-      </div>
-    </div>
   </header>
 
   <main class="contenido">
 
-    <!-- ============ ÍNDICE ============ -->
-    <nav class="indice">
-      <h3>Contenido del documento</h3>
-      <ol>
-        <li><a href="#s1">Marco conceptual</a></li>
-        <li><a href="#s2">Ficha de trabajo</a></li>
-        <li><a href="#s3">Análisis de la empresa</a></li>
-        <li><a href="#s4">Clasificación de procesos</a></li>
-        <li><a href="#s5">Mini mapa de procesos</a></li>
-        <li><a href="#s6">Cadena de valor de Porter</a></li>
-        <li><a href="#s7">Factores críticos de éxito</a></li>
-        <li><a href="#s8">Riesgos y mejora continua</a></li>
-        <li><a href="#s9">Conclusión</a></li>
-        <li><a href="#s10">Pitch de 1 minuto</a></li>
-        <li><a href="#s11">Preguntas del docente</a></li>
-        <li><a href="#s12">Referencias</a></li>
-      </ol>
-    </nav>
-
-    <!-- ============ 1. MARCO CONCEPTUAL ============ -->
-    <section id="s1">
-      <h2 class="seccion"><span class="num">01</span> Marco conceptual</h2>
-
-      <p><strong>¿Qué es un proceso?</strong> Según la NTP-ISO 9001:2015, un proceso es el conjunto de actividades interrelacionadas que transforman entradas en salidas, añadiendo valor. Todo proceso tiene: proveedor, entrada, actividades, salida, cliente y responsable (dueño del proceso).</p>
-
-      <h3 class="sub">Clasificación de procesos</h3>
-      <div class="tabla-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Función</th>
-              <th>¿Quién es su cliente?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="tipo estrategico">Estratégicos</span></td>
-              <td>Definen el rumbo, las políticas y los objetivos.</td>
-              <td>La organización en su conjunto.</td>
-            </tr>
-            <tr>
-              <td><span class="tipo misional">Misionales</span></td>
-              <td>Crean y entregan valor directamente al cliente.</td>
-              <td>El cliente externo.</td>
-            </tr>
-            <tr>
-              <td><span class="tipo apoyo">De apoyo</span></td>
-              <td>Proveen recursos, capacidades y servicios internos.</td>
-              <td>Los procesos estratégicos y misionales.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p><strong>Cadena de Valor de Porter:</strong> complementa lo anterior al separar actividades primarias (logística interna, operaciones, logística externa, marketing y ventas, servicio) de las de apoyo (compras, desarrollo tecnológico, RRHH, infraestructura). En Alicorp, producción y distribución son primarias; RRHH, TI y finanzas son de apoyo.</p>
-    </section>
-
-    <!-- ============ 2. FICHA ============ -->
-    <section id="s2">
-      <h2 class="seccion"><span class="num">02</span> Ficha de trabajo</h2>
+    <!-- ============ FICHA: DATOS GENERALES ============ -->
+    <section>
+      <h2 class="bloque"><span class="num">01</span> Datos de la empresa</h2>
 
       <div class="tabla-wrap">
         <table>
           <thead>
             <tr>
-              <th style="width: 28%;">Dato</th>
-              <th>Respuesta del equipo</th>
+              <th style="width: 32%;">Dato</th>
+              <th>Respuesta</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Empresa</td><td>Alicorp S.A.A.</td></tr>
-            <tr><td>Sector</td><td>Consumo masivo (alimentos, cuidado del hogar y personal).</td></tr>
-            <tr><td>Producto / Servicio principal</td><td>Producción, distribución y comercialización de productos de consumo masivo bajo diversas marcas: Primor, Capri, Don Vittorio, AlaCena, Nicolini, Bolívar, Opal, Blanca Flor, entre otras.</td></tr>
-            <tr><td>Cliente principal</td><td>Consumidores y hogares; además de bodegas, mercados, supermercados, distribuidores, comercios y clientes industriales (food service).</td></tr>
-            <tr><td>Alcance</td><td>Empresa peruana del Grupo Romero con operaciones en Perú y filiales en Bolivia, Ecuador, Chile, Argentina, Brasil y otros mercados. Cotiza en la Bolsa de Valores de Lima (BVL).</td></tr>
+            <tr>
+              <td>Empresa</td>
+              <td>Alicorp S.A.A.</td>
+            </tr>
+            <tr>
+              <td>Producto / Servicio principal</td>
+              <td>Producción, distribución y comercialización de productos de consumo masivo bajo diversas marcas: Primor, Capri, Don Vittorio, AlaCena, Nicolini, Bolívar, Opal, Blanca Flor, entre otras.</td>
+            </tr>
+            <tr>
+              <td>Cliente principal</td>
+              <td>Consumidores y hogares; además de bodegas, mercados, supermercados, distribuidores, comercios y clientes industriales (food service).</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ============ 3. ANÁLISIS ============ -->
-    <section id="s3">
-      <h2 class="seccion"><span class="num">03</span> Análisis de la empresa</h2>
+    <!-- ============ FICHA: PREGUNTAS ============ -->
+    <section style="margin-top: 45px;">
+      <h2 class="bloque"><span class="num">02</span> Análisis de la empresa</h2>
+
+      <p class="intro">Analiza información de la empresa y responde las siguientes preguntas:</p>
 
       <div class="tabla-wrap">
         <table>
           <thead>
             <tr>
-              <th style="width: 32%;">Pregunta</th>
+              <th style="width: 40%;">Pregunta</th>
               <th>Respuesta del equipo</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>¿Qué necesidad del cliente satisface?</td>
+              <td>¿Qué necesidad del cliente satisface la empresa?</td>
               <td>Necesidades cotidianas de alimentación, higiene y cuidado del hogar. Su propuesta de valor se basa en productos de uso frecuente, accesibles, confiables y disponibles en múltiples canales.</td>
             </tr>
             <tr>
@@ -634,15 +306,15 @@
               <td>No es un producto único: es un <strong>portafolio</strong> de marcas y categorías que abastece tanto al consumidor final como al canal comercial e industrial.</td>
             </tr>
             <tr>
-              <td>¿Qué actividades generan valor directamente al cliente?</td>
+              <td>¿Qué actividades generan directamente valor al cliente?</td>
               <td>Desarrollo de productos, fabricación, control de calidad, distribución, disponibilidad en punto de venta y comercialización. Transforman materias primas en productos que el cliente puede adquirir y usar.</td>
             </tr>
             <tr>
-              <td>¿Qué actividades dirigen y orientan a la empresa?</td>
+              <td>¿Qué actividades permiten dirigir y orientar a la empresa?</td>
               <td>Planificación estratégica, definición de objetivos, análisis de mercado, gestión de marcas y toma de decisiones. Determinan hacia dónde va la empresa y cómo compite.</td>
             </tr>
             <tr>
-              <td>¿Qué actividades brindan soporte?</td>
+              <td>¿Qué actividades brindan recursos o soporte?</td>
               <td>Recursos humanos, finanzas, TI, compras, mantenimiento, gestión legal y servicios internos. Proveen recursos y condiciones para que los otros procesos operen.</td>
             </tr>
           </tbody>
@@ -650,339 +322,103 @@
       </div>
     </section>
 
-    <!-- ============ 4. CLASIFICACIÓN ============ -->
-    <section id="s4">
-      <h2 class="seccion"><span class="num">04</span> Clasificación y análisis de procesos</h2>
+    <!-- ============ FICHA: TABLA DE PROCESOS ============ -->
+    <section style="margin-top: 45px;">
+      <h2 class="bloque"><span class="num">03</span> Clasificación de procesos</h2>
 
-      <p>La clasificación se hace según la función que cumple cada proceso: los <strong>estratégicos</strong> orientan y deciden; los <strong>misionales</strong> generan y entregan valor al cliente; los <strong>de apoyo</strong> proveen recursos y capacidades.</p>
+      <p class="intro">Luego completa:</p>
 
       <div class="tabla-wrap">
         <table>
           <thead>
             <tr>
-              <th>Proceso</th>
-              <th>¿Qué hace?</th>
-              <th>Entradas</th>
-              <th>Salidas</th>
-              <th>Tipo</th>
-              <th>KPI sugerido</th>
+              <th style="width: 20%;">Proceso identificado</th>
+              <th style="width: 28%;">¿Qué hace?</th>
+              <th style="width: 16%;">Tipo de Proceso</th>
+              <th>¿Por qué lo clasificamos así?</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Planificación estratégica</td>
-              <td>Define objetivos, estrategias, prioridades y planes.</td>
-              <td>Info. de mercado, resultados internos, presupuesto.</td>
-              <td>Plan estratégico, objetivos, presupuesto.</td>
+              <td>Define objetivos, estrategias, prioridades y planes para orientar a la organización.</td>
               <td><span class="tipo estrategico">Estratégico</span></td>
-              <td>% objetivos cumplidos</td>
+              <td>Orienta a toda la empresa y establece hacia dónde debe dirigirse.</td>
             </tr>
             <tr>
               <td>Gestión de marcas y mercado</td>
-              <td>Analiza consumidor, mercado y competencia; define estrategia de marca.</td>
-              <td>Investigación de mercado, sell-out, benchmarking.</td>
-              <td>Plan de marca, precios, campañas, portafolio.</td>
+              <td>Analiza consumidores, mercado y competencia, y desarrolla estrategias para las marcas.</td>
               <td><span class="tipo estrategico">Estratégico</span></td>
-              <td>Participación de mercado</td>
+              <td>Permite decidir cómo competir y cómo responder a las necesidades del mercado.</td>
             </tr>
             <tr>
               <td>Desarrollo de productos</td>
-              <td>Diseña, adapta y mejora productos.</td>
-              <td>Tendencias, brief del consumidor, insumos.</td>
-              <td>Prototipos, fichas técnicas, productos aprobados.</td>
+              <td>Diseña, adapta y mejora productos de acuerdo con las necesidades y oportunidades identificadas.</td>
               <td><span class="tipo misional">Misional</span></td>
-              <td>N° de lanzamientos</td>
+              <td>Está directamente relacionado con la creación de la oferta que recibe el cliente.</td>
             </tr>
             <tr>
               <td>Producción</td>
-              <td>Transforma materias primas en productos terminados.</td>
-              <td>Materias primas, mano de obra, energía, plan.</td>
-              <td>Producto terminado.</td>
+              <td>Transforma materias primas y recursos en productos terminados.</td>
               <td><span class="tipo misional">Misional</span></td>
-              <td>OEE, rendimiento</td>
+              <td>Es una actividad central para generar el producto que será entregado al cliente.</td>
             </tr>
             <tr>
               <td>Control de calidad</td>
-              <td>Verifica especificaciones, estándares e inocuidad.</td>
-              <td>Producto en proceso y terminado, normas.</td>
-              <td>Producto conforme, registros, acciones correctivas.</td>
+              <td>Verifica que los productos cumplan especificaciones, estándares y condiciones de calidad.</td>
               <td><span class="tipo misional">Misional</span></td>
-              <td>% producto no conforme</td>
+              <td>Contribuye directamente a que el cliente reciba productos adecuados y confiables.</td>
             </tr>
             <tr>
               <td>Distribución y logística</td>
-              <td>Almacena, gestiona y transporta productos a puntos de venta.</td>
-              <td>Producto terminado, pedidos, flota, almacenes.</td>
-              <td>Producto entregado en punto de venta.</td>
+              <td>Almacena, gestiona y transporta productos hacia tiendas, supermercados y otros puntos de venta.</td>
               <td><span class="tipo misional">Misional</span></td>
-              <td>OTIF, fill rate</td>
+              <td>Permite que el producto llegue al lugar y momento adecuados.</td>
             </tr>
             <tr>
               <td>Ventas y comercialización</td>
-              <td>Promueve, ofrece y vende por distintos canales.</td>
-              <td>Portafolio, lista de precios, trade marketing.</td>
-              <td>Pedidos, ventas, sell-out.</td>
+              <td>Promueve, ofrece y vende los productos a través de los distintos canales.</td>
               <td><span class="tipo misional">Misional</span></td>
-              <td>Ventas netas, cobertura</td>
+              <td>Conecta la oferta de la empresa con los clientes y concreta la entrega de valor.</td>
             </tr>
             <tr>
               <td>Gestión de recursos humanos</td>
-              <td>Selecciona, capacita y gestiona al personal.</td>
-              <td>Necesidades de personal, perfiles, presupuesto.</td>
-              <td>Personal contratado y capacitado.</td>
+              <td>Selecciona, capacita y gestiona al personal de la organización.</td>
               <td><span class="tipo apoyo">Apoyo</span></td>
-              <td>Rotación, ausentismo</td>
+              <td>Proporciona las personas y capacidades necesarias para operar los demás procesos.</td>
             </tr>
             <tr>
               <td>Gestión financiera</td>
-              <td>Administra presupuestos, ingresos, pagos e inversiones.</td>
-              <td>Flujos de caja, estados financieros, políticas.</td>
-              <td>Presupuesto, financiamiento, reportes.</td>
+              <td>Administra presupuestos, ingresos, pagos, inversiones y recursos económicos.</td>
               <td><span class="tipo apoyo">Apoyo</span></td>
-              <td>EBITDA, liquidez</td>
+              <td>Asegura los recursos financieros necesarios para mantener las operaciones.</td>
             </tr>
             <tr>
               <td>Tecnología de información</td>
-              <td>Mantiene sistemas, datos y herramientas digitales.</td>
-              <td>Requerimientos de áreas, infraestructura.</td>
-              <td>Sistemas operativos, información, reportes.</td>
+              <td>Mantiene sistemas, datos y herramientas tecnológicas que apoyan las operaciones.</td>
               <td><span class="tipo apoyo">Apoyo</span></td>
-              <td>Disponibilidad de sistemas</td>
+              <td>Facilita información y herramientas para que las diferentes áreas funcionen correctamente.</td>
             </tr>
             <tr>
               <td>Compras y abastecimiento</td>
-              <td>Gestiona adquisición de materias primas e insumos.</td>
-              <td>Plan de producción, requerimientos, proveedores.</td>
-              <td>Materias primas e insumos oportunos.</td>
+              <td>Gestiona la adquisición de materias primas, insumos y otros recursos necesarios.</td>
               <td><span class="tipo apoyo">Apoyo</span></td>
-              <td>Ahorro en compras</td>
+              <td>Asegura que las áreas dispongan de recursos para realizar sus actividades.</td>
             </tr>
             <tr>
               <td>Mantenimiento</td>
-              <td>Conserva equipos, instalaciones y activos.</td>
-              <td>Plan de mantenimiento, equipos, repuestos.</td>
-              <td>Equipos disponibles y operativos.</td>
+              <td>Conserva equipos, instalaciones y activos en condiciones adecuadas de funcionamiento.</td>
               <td><span class="tipo apoyo">Apoyo</span></td>
-              <td>MTBF, MTTR</td>
+              <td>Reduce interrupciones y sostiene la continuidad de las operaciones.</td>
             </tr>
             <tr>
               <td>Gestión legal</td>
-              <td>Asegura cumplimiento normativo, contratos y contingencias.</td>
-              <td>Normativa vigente, contratos, requerimientos.</td>
-              <td>Contratos formalizados, asesoría, compliance.</td>
+              <td>Asegura el cumplimiento normativo, la gestión de contratos y las contingencias legales.</td>
               <td><span class="tipo apoyo">Apoyo</span></td>
-              <td>% cumplimiento normativo</td>
+              <td>Protege legalmente a la organización y sostiene su operación.</td>
             </tr>
           </tbody>
         </table>
-      </div>
-    </section>
-
-    <!-- ============ 5. MAPA ============ -->
-    <section id="s5">
-      <h2 class="seccion"><span class="num">05</span> Mini mapa de procesos de Alicorp</h2>
-
-      <div class="mapa">
-        <div class="nivel estrategico">
-          <h4>Procesos estratégicos</h4>
-          <div class="flujo">
-            <span class="caja">Planificación estratégica</span>
-            <span class="flecha">→</span>
-            <span class="caja">Gestión de marcas y mercado</span>
-          </div>
-        </div>
-
-        <div class="nivel misional">
-          <h4>Procesos misionales / operativos</h4>
-          <div class="flujo">
-            <span class="caja">Desarrollo de productos</span>
-            <span class="flecha">→</span>
-            <span class="caja">Producción</span>
-            <span class="flecha">→</span>
-            <span class="caja">Control de calidad</span>
-            <span class="flecha">→</span>
-            <span class="caja">Distribución y logística</span>
-            <span class="flecha">→</span>
-            <span class="caja">Ventas y comercialización</span>
-          </div>
-        </div>
-
-        <div class="nivel apoyo">
-          <h4>Procesos de apoyo</h4>
-          <div class="flujo">
-            <span class="caja">Recursos humanos</span>
-            <span class="caja">Finanzas</span>
-            <span class="caja">Tecnología</span>
-            <span class="caja">Compras y abastecimiento</span>
-            <span class="caja">Mantenimiento</span>
-            <span class="caja">Gestión legal</span>
-          </div>
-        </div>
-      </div>
-
-      <p><strong>Interpretación:</strong> los procesos estratégicos establecen el rumbo; los misionales ejecutan las actividades que crean y entregan el producto; y los de apoyo proveen los recursos y condiciones para que los otros funcionen. <strong>La generación de valor depende de la interacción de todos ellos, no de uno aislado.</strong></p>
-    </section>
-
-    <!-- ============ 6. PORTER ============ -->
-    <section id="s6">
-      <h2 class="seccion"><span class="num">06</span> Cadena de valor de Porter aplicada a Alicorp</h2>
-
-      <h3 class="sub">Actividades primarias</h3>
-      <div class="tabla-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 30%;">Actividad</th>
-              <th>Aplicación en Alicorp</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Logística interna</td><td>Recepción y almacenamiento de materias primas (harinas, aceites, insumos).</td></tr>
-            <tr><td>Operaciones</td><td>Producción en plantas de alimentos, cuidado del hogar y personal.</td></tr>
-            <tr><td>Logística externa</td><td>Distribución a bodegas, mercados, supermercados y clientes industriales.</td></tr>
-            <tr><td>Marketing y ventas</td><td>Gestión de marcas, trade marketing, publicidad y fuerza de ventas.</td></tr>
-            <tr><td>Servicio</td><td>Atención al cliente, gestión de reclamos y postventa.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="sub">Actividades de apoyo</h3>
-      <div class="tabla-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 30%;">Actividad</th>
-              <th>Aplicación en Alicorp</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Compras</td><td>Abastecimiento de materias primas e insumos.</td></tr>
-            <tr><td>Desarrollo tecnológico</td><td>I+D de productos, mejora de procesos, transformación digital.</td></tr>
-            <tr><td>Recursos humanos</td><td>Gestión del talento y capacitación.</td></tr>
-            <tr><td>Infraestructura</td><td>Finanzas, planificación, legal, calidad.</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p><strong>Margen:</strong> Alicorp obtiene ventaja competitiva cuando el conjunto de estas actividades se ejecuta con eficiencia, calidad y consistencia, lo que se traduce en marcas fuertes, costos competitivos y alta disponibilidad.</p>
-    </section>
-
-    <!-- ============ 7. FACTORES ============ -->
-    <section id="s7">
-      <h2 class="seccion"><span class="num">07</span> Factores críticos de éxito</h2>
-
-      <ol class="lista">
-        <li><strong>Disponibilidad del producto</strong> en el punto de venta (evitar quiebres de stock).</li>
-        <li><strong>Inocuidad y calidad</strong> de los alimentos (riesgo reputacional y regulatorio altísimo).</li>
-        <li><strong>Fuerza de marca</strong> y recordación en el consumidor peruano.</li>
-        <li><strong>Eficiencia logística y de costos</strong> en un sector de márgenes ajustados.</li>
-        <li><strong>Innovación</strong> para responder a nuevas tendencias (saludable, práctico, económico).</li>
-      </ol>
-    </section>
-
-    <!-- ============ 8. PHVA ============ -->
-    <section id="s8">
-      <h2 class="seccion"><span class="num">08</span> Riesgos y mejora continua (PHVA)</h2>
-
-      <div class="phva-grid">
-        <div class="phva-card">
-          <h5>Planificar</h5>
-          <p>Definir objetivos por proceso e indicadores.</p>
-        </div>
-        <div class="phva-card">
-          <h5>Hacer</h5>
-          <p>Ejecutar los procesos según estándares definidos.</p>
-        </div>
-        <div class="phva-card">
-          <h5>Verificar</h5>
-          <p>Medir KPI y comparar contra metas.</p>
-        </div>
-        <div class="phva-card">
-          <h5>Actuar</h5>
-          <p>Corregir desviaciones y estandarizar mejoras.</p>
-        </div>
-      </div>
-
-      <p><strong>Riesgos principales:</strong> quiebre de stock, fallas de calidad, alza de costos de insumos, disrupciones logísticas, cambios regulatorios y competencia de marcas propias y regionales.</p>
-    </section>
-
-    <!-- ============ 9. CONCLUSIÓN ============ -->
-    <section id="s9">
-      <h2 class="seccion"><span class="num">09</span> Conclusión</h2>
-
-      <p>El análisis de Alicorp permite comprender que una empresa de consumo masivo no funciona únicamente fabricando productos. Para que un producto llegue al consumidor y genere valor, debe existir una <strong>cadena de procesos conectados</strong>: la planificación y la gestión de mercado establecen el rumbo; el desarrollo, la producción, el control de calidad, la distribución y las ventas crean y entregan el producto; y recursos humanos, finanzas, tecnología, compras, mantenimiento y gestión legal brindan el soporte necesario.</p>
-
-      <p>Por lo tanto, <strong>el éxito de Alicorp depende de la interrelación y coordinación de sus procesos</strong>. Cada uno cumple una función específica, pero ninguno debe analizarse de forma aislada. Cuando funcionan de manera integrada, la empresa responde a las necesidades del cliente, mantiene la calidad, asegura la disponibilidad y sostiene sus objetivos organizacionales.</p>
-    </section>
-
-    <!-- ============ 10. PITCH ============ -->
-    <section id="s10">
-      <h2 class="seccion"><span class="num">10</span> Pitch de 1 minuto</h2>
-
-      <div class="pitch">
-        <p>Buenos días. Somos el Grupo 1 y analizamos <strong>Alicorp</strong>, una empresa peruana de consumo masivo.</p>
-        <p>Identificamos tres tipos de procesos. Primero, los <strong>estratégicos</strong>, como la planificación estratégica y la gestión de marcas y mercado, que definen hacia dónde va la empresa y cómo compite.</p>
-        <p>Segundo, los <strong>misionales</strong>, que generan directamente valor para el cliente: desarrollo de productos, producción, control de calidad, distribución y ventas. Estos transforman recursos en productos y los hacen llegar al consumidor en condiciones adecuadas.</p>
-        <p>Finalmente, los <strong>de apoyo</strong>: recursos humanos, finanzas, tecnología, compras, mantenimiento y gestión legal, que proporcionan los recursos y capacidades para que las demás actividades funcionen.</p>
-        <p>Concluimos que el éxito de Alicorp no depende de un solo proceso, sino de la <strong>interrelación de todos ellos</strong>. Cada uno cumple una función distinta, pero juntos permiten que el producto llegue al cliente con calidad, en el momento y lugar adecuados.</p>
-      </div>
-    </section>
-
-    <!-- ============ 11. PREGUNTAS ============ -->
-    <section id="s11">
-      <h2 class="seccion"><span class="num">11</span> Posibles preguntas del docente</h2>
-
-      <div class="tabla-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 38%;">Pregunta posible</th>
-              <th>Respuesta sugerida</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>¿Por qué producción es un proceso misional?</td>
-              <td>Porque participa directamente en la transformación de recursos y materias primas en el producto que recibe el cliente.</td>
-            </tr>
-            <tr>
-              <td>¿Por qué recursos humanos es un proceso de apoyo?</td>
-              <td>Porque no constituye por sí mismo el producto que compra el cliente, pero provee las personas y capacidades necesarias para que los demás procesos funcionen.</td>
-            </tr>
-            <tr>
-              <td>¿Por qué planificación estratégica es un proceso estratégico?</td>
-              <td>Porque establece objetivos, prioridades y decisiones que orientan a toda la organización.</td>
-            </tr>
-            <tr>
-              <td>¿Por qué distribución es misional y no de apoyo?</td>
-              <td>Porque en consumo masivo no basta fabricar: el producto debe llegar al cliente. La distribución participa directamente en la entrega de valor.</td>
-            </tr>
-            <tr>
-              <td>¿Cuál es la idea principal del mapa?</td>
-              <td>Que los procesos están interrelacionados: la estrategia orienta, los misionales generan y entregan valor, y los de apoyo permiten que todo el sistema funcione.</td>
-            </tr>
-            <tr>
-              <td>¿Qué pasaría si falla un proceso de apoyo?</td>
-              <td>Aunque no toque directamente al cliente, su falla impacta en cadena: sin compras no hay producción; sin mantenimiento, la planta se detiene; sin TI, la distribución pierde trazabilidad.</td>
-            </tr>
-            <tr>
-              <td>¿Cómo se mide que un proceso funciona bien?</td>
-              <td>Con indicadores (KPI) alineados a los objetivos estratégicos, revisados periódicamente bajo el ciclo PHVA.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ============ 12. REFERENCIAS ============ -->
-    <section id="s12">
-      <h2 class="seccion"><span class="num">12</span> Referencias (APA 7)</h2>
-
-      <div class="referencias">
-        <p>Alicorp S.A.A. (2024). <em>Memoria Anual</em>. Lima: Alicorp. Recuperado de <a href="https://www.smv.gob.pe/SIMV/Frm_Memorias?data=520FE826006982BOE5EA28C44836DFD5D328C975B7" target="_blank" rel="noopener">https://www.smv.gob.pe/SIMV/Frm_Memorias</a></p>
-        <p>Instituto Nacional de Calidad. (2015). <em>NTP-ISO 9001:2015. Sistemas de gestión de la calidad. Requisitos</em>. Lima: INACAL. Recuperado de <a href="https://servicios.inacal.gob.pe/cidalerta/biblioteca-detalle.aspx?id=21970" target="_blank" rel="noopener">https://servicios.inacal.gob.pe/cidalerta/biblioteca-detalle.aspx?id=21970</a></p>
-        <p>Porter, M. E. (1985). <em>Competitive Advantage: Creating and Sustaining Superior Performance</em>. New York: Free Press. Recuperado de <a href="https://ebookcentral.proquest.com/lib/gla/detail.action?docID=4934923" target="_blank" rel="noopener">https://ebookcentral.proquest.com/lib/gla/detail.action?docID=4934923</a></p>
-        <p>Superintendencia del Mercado de Valores. (2024). <em>Información financiera de empresas emisoras</em>. Lima: SMV. Recuperado de <a href="https://www.smv.gob.pe/SIMV/Default.aspx" target="_blank" rel="noopener">https://www.smv.gob.pe/SIMV/Default.aspx</a></p>
       </div>
     </section>
 
@@ -993,43 +429,6 @@
   </footer>
 
 </div>
-
-<script>
-  // Scroll suave al hacer clic en el índice
-  document.querySelectorAll('.indice a').forEach(function(enlace) {
-    enlace.addEventListener('click', function(e) {
-      e.preventDefault();
-      var destino = document.querySelector(this.getAttribute('href'));
-      if (destino) {
-        destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  // Resaltar la sección activa al hacer scroll
-  var secciones = document.querySelectorAll('section[id]');
-  var enlaces = document.querySelectorAll('.indice a');
-
-  window.addEventListener('scroll', function() {
-    var posicion = window.scrollY + 120;
-    var actual = '';
-
-    secciones.forEach(function(sec) {
-      if (sec.offsetTop <= posicion) {
-        actual = sec.getAttribute('id');
-      }
-    });
-
-    enlaces.forEach(function(enlace) {
-      enlace.style.color = '';
-      enlace.style.fontWeight = '';
-      if (enlace.getAttribute('href') === '#' + actual) {
-        enlace.style.color = '#6b7c5e';
-        enlace.style.fontWeight = '700';
-      }
-    });
-  });
-</script>
 
 </body>
 </html>
