@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta · Sistema NFC Biblioteca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    /* FONDOS */
+    --bg-app: #f4f6fa;
+    --bg-stage: #ffffff;
+    --bg-card: #ffffff;
+    --bg-soft: #f8fafc;
+    --bg-tint: #eef2f8;
+
+    /* BORDES */
+    --border: #e4e8f0;
+    --border-strong: #cbd3e0;
+
+    /* TEXTO */
+    --text-hi: #0f1e35;
+    --text-med: #475569;
+    --text-low: #7a8699;
+    --text-dim: #9aa5b8;
+
+    /* ACENTOS */
+    --navy: #1e3a5f;
+    --navy-deep: #0f2440;
+    --emerald: #0d9488;
+    --emerald-soft: #14b8a6;
+    --emerald-tint: #ccfbf1;
+    --amber: #d97706;
+    --amber-soft: #f59e0b;
+    --amber-tint: #fef3c7;
+    --red: #dc2626;
+    --red-soft: #ef4444;
+    --red-tint: #fee2e2;
+    --indigo: #4f46e5;
+    --indigo-tint: #e0e7ff;
+
+    /* SOMBRAS */
+    --shadow-xs: 0 1px 2px rgba(15, 30, 53, 0.05);
+    --shadow-sm: 0 1px 3px rgba(15, 30, 53, 0.08), 0 1px 2px rgba(15, 30, 53, 0.04);
+    --shadow-md: 0 4px 12px rgba(15, 30, 53, 0.08), 0 2px 4px rgba(15, 30, 53, 0.04);
+    --shadow-lg: 0 12px 32px rgba(15, 30, 53, 0.12), 0 4px 8px rgba(15, 30, 53, 0.05);
+    --shadow-glow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+
+    /* RADIOS */
+    --r-sm: 6px;
+    --r: 10px;
+    --r-md: 14px;
+    --r-lg: 20px;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-app);
+    color: var(--text-med);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ============ APP LAYOUT ============ */
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: 100vh;
+    transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .app.collapsed { grid-template-columns: 76px 1fr; }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    background: var(--bg-stage);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.4s;
+    z-index: 20;
+  }
+
+  .sidebar-head {
+    padding: 22px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 76px;
+  }
+
+  .logo-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--emerald) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+    position: relative;
+  }
+
+  .logo-mark::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .logo-mark svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s;
+  }
+
+  .logo-text .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-hi);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text .tag {
+    font-size: 10.5px;
+    color: var(--text-low);
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-top: 2px;
+    font-weight: 600;
+  }
+
+  .app.collapsed .logo-text { opacity: 0; width: 0; }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar { width: 4px; }
+  .sidebar-nav::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 2px; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    color: var(--text-med);
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .nav-item:hover {
+    background: var(--bg-tint);
+    color: var(--text-hi);
+  }
+
+  .nav-item.active {
+    background: linear-gradient(90deg, var(--emerald-tint) 0%, rgba(204, 251, 241, 0.4) 100%);
+    color: var(--navy);
+    border-color: rgba(13, 148, 136, 0.2);
+    font-weight: 600;
+  }
+
+  .nav-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: var(--emerald);
+    border-radius: 0 3px 3px 0;
+  }
+
+  .nav-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tint);
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-low);
+    transition: all 0.25s;
+  }
+
+  .nav-item.active .nav-icon {
+    background: var(--emerald);
+    color: white;
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.35);
+  }
+
+  .nav-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity 0.3s;
+  }
+
+  .app.collapsed .nav-label { opacity: 0; width: 0; }
+
+  .sidebar-foot {
+    padding: 16px 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .badge-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--emerald-tint);
+    border: 1px solid rgba(13, 148, 136, 0.18);
+    border-radius: var(--r-sm);
+    font-size: 12px;
+    color: var(--emerald);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--emerald);
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: var(--emerald);
+    opacity: 0.3;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.6; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+
+  /* ============ MAIN ============ */
+  .main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-app);
+  }
+
+  /* ---------- TOOLBAR ---------- */
+  .toolbar {
+    height: 76px;
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    background: var(--bg-stage);
+    border-bottom: 1px solid var(--border);
+    gap: 20px;
+    z-index: 10;
+  }
+
+  .toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--r-sm);
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    color: var(--text-med);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .icon-btn:hover {
+    background: var(--bg-tint);
+    border-color: var(--border-strong);
+    color: var(--navy);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .icon-btn:active { transform: translateY(0); }
+
+  .icon-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .icon-btn.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+  }
+
+  .icon-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .crumb {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .crumb .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  .crumb .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-hi);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+  }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .progress-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-med);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .progress-pill .bar {
+    width: 80px;
+    height: 5px;
+    background: var(--bg-tint);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-pill .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--emerald) 100%);
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ---------- STAGE ---------- */
+  .stage {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    padding: 32px;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 32px;
+    background: var(--bg-stage);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 50px 56px;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide::-webkit-scrollbar { width: 6px; }
+  .slide::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  /* ---------- SLIDE ELEMENTS ---------- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--emerald);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    padding: 5px 12px;
+    background: var(--emerald-tint);
+    border-radius: 20px;
+    width: fit-content;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--emerald);
+  }
+
+  h1.hero {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -1.8px;
+    color: var(--text-hi);
+    margin-bottom: 22px;
+    max-width: 950px;
+  }
+
+  h1.hero .em {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--emerald) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  h2.title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.14;
+    letter-spacing: -1.2px;
+    color: var(--text-hi);
+    margin-bottom: 14px;
+    max-width: 900px;
+  }
+
+  h2.title .em {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--emerald) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    font-size: 16.5px;
+    line-height: 1.65;
+    color: var(--text-med);
+    max-width: 780px;
+    margin-bottom: 34px;
+    font-weight: 400;
+  }
+
+  .subtitle strong {
+    color: var(--text-hi);
+    font-weight: 600;
+  }
+
+  /* ---------- COVER META ---------- */
+  .cover-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+  }
+
+  .meta-chip .ico {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .meta-chip .ico svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  .meta-chip .txt { display: flex; flex-direction: column; }
+  .meta-chip .k { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-dim); font-weight: 600; }
+  .meta-chip .v { font-size: 13.5px; font-weight: 600; color: var(--text-hi); margin-top: 2px; }
+
+  /* ---------- STAT CARDS (PROBLEMA) ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 26px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red) 0%, var(--amber-soft) 100%);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-strong);
+  }
+
+  .stat-card .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--red);
+    letter-spacing: -1.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+  }
+
+  .stat-card .num small {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-low);
+  }
+
+  .stat-card .lbl {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-hi);
+    margin-bottom: 8px;
+    line-height: 1.35;
+  }
+
+  .stat-card .desc {
+    font-size: 12.5px;
+    color: var(--text-low);
+    line-height: 1.55;
+  }
+
+  /* ---------- FLOW ---------- */
+  .flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 14px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .flow-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 28px 22px;
+    position: relative;
+    transition: all 0.3s;
+    text-align: center;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .flow-step:hover {
+    transform: translateY(-4px);
+    border-color: var(--emerald);
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.12);
+  }
+
+  .flow-step .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--emerald) 100%);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 16px rgba(30, 58, 95, 0.25);
+  }
+
+  .flow-step .s-t {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--text-hi);
+    margin-bottom: 8px;
+  }
+
+  .flow-step .s-d {
+    font-size: 13px;
+    color: var(--text-low);
+    line-height: 1.55;
+  }
+
+  .flow-arrow {
+    color: var(--emerald);
+    font-size: 22px;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
+  /* ---------- COMPARE TABLE ---------- */
+  .compare {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-card);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-top: 12px;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .compare thead th {
+    padding: 16px 22px;
+    text-align: left;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    color: var(--text-low);
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .compare thead th.c-old { color: var(--red); }
+  .compare thead th.c-new { color: var(--emerald); }
+
+  .compare tbody td {
+    padding: 15px 22px;
+    font-size: 14px;
+    color: var(--text-med);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare tbody tr:hover { background: var(--bg-soft); }
+
+  .compare td:first-child {
+    font-weight: 600;
+    color: var(--text-hi);
+    font-size: 13.5px;
+    white-space: nowrap;
+  }
+
+  .tag-old, .tag-new {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.4px;
+    margin-right: 6px;
+  }
+
+  .tag-old { background: var(--red-tint); color: var(--red); }
+  .tag-new { background: var(--emerald-tint); color: var(--emerald); }
+
+  /* ---------- ARCHITECTURE ---------- */
+  .arch {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .arch-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
+    align-items: center;
+    padding: 18px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--emerald);
+    border-radius: var(--r-sm);
+    transition: all 0.25s;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .arch-row:hover {
+    border-left-color: var(--navy);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .arch-row .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .arch-row .badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--emerald);
+  }
+
+  .arch-row .txt {
+    font-size: 14px;
+    color: var(--text-med);
+    line-height: 1.5;
+  }
+
+  /* ---------- INVEST ---------- */
+  .invest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-top: 12px;
+  }
+
+  .invest-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 22px 18px;
+    text-align: center;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .invest-card:hover {
+    border-color: var(--emerald);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.10);
+  }
+
+  .invest-card .name {
+    font-size: 12.5px;
+    color: var(--text-low);
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.35;
+  }
+
+  .invest-card .price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+
+  .invest-card .price.free { color: var(--emerald); }
+
+  .invest-card .unit {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.3px;
+  }
+
+  .invest-total {
+    margin-top: 20px;
+    padding: 22px 30px;
+    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+    border: 1px solid rgba(13, 148, 136, 0.25);
+    border-radius: var(--r-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .invest-total .lab {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    color: var(--text-med);
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    font-weight: 600;
+  }
+
+  .invest-total .amt {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--emerald);
+    letter-spacing: -1.5px;
+  }
+
+  /* ---------- KPI GRID ---------- */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 24px;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-xs);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--emerald) 0%, var(--amber-soft) 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .kpi-card:hover::after { opacity: 1; }
+
+  .kpi-card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .kpi-card .k-lab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .kpi-card .k-values {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .kpi-card .k-before {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-decoration: line-through;
+    text-decoration-color: var(--red);
+    text-decoration-thickness: 2px;
+  }
+
+  .kpi-card .k-arrow {
+    color: var(--amber);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .kpi-card .k-after {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--emerald);
+    letter-spacing: -1.2px;
+    line-height: 1;
+  }
+
+  /* ---------- VALUE GRID ---------- */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+  }
+
+  .value-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 24px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .value-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--emerald) 100%);
+  }
+
+  .value-card:hover {
+    transform: translateX(4px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .value-card .v-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: var(--bg-tint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    color: var(--navy);
+  }
+
+  .value-card .v-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .value-card .v-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--text-hi);
+    margin-bottom: 8px;
+  }
+
+  .value-card .v-desc {
+    font-size: 13px;
+    color: var(--text-low);
+    line-height: 1.55;
+  }
+
+  /* ---------- SCALE GRID ---------- */
+  .scale-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .scale-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 22px 18px;
+    text-align: center;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .scale-item:hover {
+    border-color: var(--emerald);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.12);
+  }
+
+  .scale-item .s-sector {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-hi);
+    margin-bottom: 6px;
+  }
+
+  .scale-item .s-use {
+    font-size: 12.5px;
+    color: var(--text-low);
+    line-height: 1.5;
+  }
+
+  /* ---------- ROADMAP ---------- */
+  .roadmap {
+    margin-top: 20px;
+    position: relative;
+    padding-left: 44px;
+  }
+
+  .roadmap::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--emerald) 100%);
+    border-radius: 1px;
+  }
+
+  .rm-item {
+    position: relative;
+    margin-bottom: 18px;
+    padding-left: 8px;
+  }
+
+  .rm-item::before {
+    content: "";
+    position: absolute;
+    left: -38px;
+    top: 5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg-stage);
+    border: 3px solid var(--emerald);
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+  }
+
+  .rm-item .rm-week {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .rm-item .rm-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-hi);
+    margin-bottom: 3px;
+  }
+
+  .rm-item .rm-desc {
+    font-size: 12.5px;
+    color: var(--text-low);
+    line-height: 1.55;
+  }
+
+  /* ---------- CLOSING ---------- */
+  .closing {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  }
+
+  .closing .quote-big {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.22;
+    letter-spacing: -1.3px;
+    max-width: 950px;
+    margin-bottom: 32px;
+    color: var(--text-hi);
+  }
+
+  .closing .quote-big .em {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--emerald) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+  }
+
+  .closing .divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, var(--emerald) 50%, transparent 100%);
+    margin: 0 auto 26px;
+    border-radius: 2px;
+  }
+
+  .closing .sig {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  /* ---------- BOTTOM BAR ---------- */
+  .bottombar {
+    height: 68px;
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    background: var(--bg-stage);
+    border-top: 1px solid var(--border);
+    gap: 16px;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    color: var(--text-med);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover:not(:disabled) {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(30, 58, 95, 0.2);
+  }
+
+  .nav-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .nav-btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .dots-nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    padding: 0;
+  }
+
+  .dot:hover {
+    background: var(--text-low);
+    transform: scale(1.3);
+  }
+
+  .dot.active {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--emerald) 100%);
+    width: 26px;
+    border-radius: 4px;
+  }
+
+  /* ============ TOAST ============ */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--navy-deep);
+    color: white;
+    padding: 12px 22px;
+    border-radius: var(--r-sm);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .toast .t-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--emerald-soft);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1100px) {
+    .app { grid-template-columns: 76px 1fr; }
+    .logo-text { opacity: 0; width: 0; }
+    .nav-label { opacity: 0; width: 0; }
+    .badge-status span:last-child { display: none; }
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 0 1fr; }
+    .sidebar { position: fixed; z-index: 50; left: 0; top: 0; bottom: 0; width: 280px; transform: translateX(-100%); transition: transform 0.3s; }
+    .app.mobile-open .sidebar { transform: translateX(0); }
+    .app.mobile-open .logo-text { opacity: 1; width: auto; }
+    .app.mobile-open .nav-label { opacity: 1; width: auto; }
+    .stage { padding: 16px; }
+    .slide { inset: 16px; padding: 32px 26px; }
+    h1.hero { font-size: 30px; letter-spacing: -1px; }
+    h2.title { font-size: 24px; }
+    .subtitle { font-size: 14.5px; }
+    .toolbar, .bottombar { padding: 0 16px; }
+    .progress-pill { display: none; }
+    .flow { grid-template-columns: 1fr; }
+    .flow-arrow { transform: rotate(90deg); text-align: center; }
+    .arch-row { grid-template-columns: 1fr; gap: 8px; }
+    .closing .quote-big { font-size: 22px; letter-spacing: -0.5px; }
+    .stat-card .num { font-size: 34px; }
+    .kpi-card .k-after { font-size: 24px; }
+    .invest-total .amt { font-size: 28px; }
+    .cover-meta { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M4 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2M4 7v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7M4 7h16M9 12h6"/></svg>
+      </div>
+      <div class="logo-text">
+        <span class="brand">BibliotecaNFC</span>
+        <span class="tag">Propuesta 2026</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <div class="nav-item active" data-slide="0"><span class="nav-icon">01</span><span class="nav-label">Portada</span></div>
+      <div class="nav-item" data-slide="1"><span class="nav-icon">02</span><span class="nav-label">Problemática</span></div>
+      <div class="nav-item" data-slide="2"><span class="nav-icon">03</span><span class="nav-label">Solución</span></div>
+      <div class="nav-item" data-slide="3"><span class="nav-icon">04</span><span class="nav-label">AS-IS vs TO-BE</span></div>
+      <div class="nav-item" data-slide="4"><span class="nav-icon">05</span><span class="nav-label">Arquitectura</span></div>
+      <div class="nav-item" data-slide="5"><span class="nav-icon">06</span><span class="nav-label">Inversión</span></div>
+      <div class="nav-item" data-slide="6"><span class="nav-icon">07</span><span class="nav-label">Indicadores</span></div>
+      <div class="nav-item" data-slide="7"><span class="nav-icon">08</span><span class="nav-label">Valor</span></div>
+      <div class="nav-item" data-slide="8"><span class="nav-icon">09</span><span class="nav-label">Escalabilidad</span></div>
+      <div class="nav-item" data-slide="9"><span class="nav-icon">10</span><span class="nav-label">Cronograma</span></div>
+      <div class="nav-item" data-slide="10"><span class="nav-icon">11</span><span class="nav-label">Cierre</span></div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="badge-status">
+        <span class="pulse-dot"></span>
+        <span>Propuesta activa</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- TOOLBAR -->
+    <header class="toolbar">
+      <div class="toolbar-left">
+        <button class="icon-btn" id="menuToggle" title="Menú lateral">
+          <svg viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+        <div class="crumb">
+          <span class="label">Gestión de Procesos · Semana 2</span>
+          <span class="title" id="crumbTitle">Portada del proyecto</span>
+        </div>
+      </div>
+
+      <div class="toolbar-right">
+        <div class="progress-pill">
+          <span id="progressText">01 / 11</span>
+          <div class="bar"><div class="bar-fill" id="progressFill"></div></div>
+        </div>
+        <button class="icon-btn" id="prevTop" title="Anterior" disabled>
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="icon-btn" id="nextTop" title="Siguiente">
+          <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="icon-btn" id="fullBtn" title="Pantalla completa">
+          <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- STAGE -->
+    <div class="stage" id="stage">
+
+      <!-- SLIDE 1 -->
+      <section class="slide active" data-title="Portada del proyecto">
+        <div class="eyebrow">Propuesta de Proyecto · 2026</div>
+        <h1 class="hero">
+          Rediseño del proceso de <span class="em">préstamo bibliotecario</span> mediante tecnología NFC
+        </h1>
+        <p class="subtitle">
+          De la atención manual al autoservicio inteligente. Una propuesta de <strong>transformación digital</strong>
+          para bibliotecas universitarias, con arquitectura serverless y análisis de datos en tiempo real.
+          Escalable a múltiples industrias.
+        </p>
+
+        <div class="cover-meta">
+          <div class="meta-chip">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="txt"><span class="k">Presentado por</span><span class="v">Chavez Huaman Adrian</span></div>
+          </div>
+          <div class="meta-chip">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+            <div class="txt"><span class="k">Stack tecnológico</span><span class="v">NFC · Cloudflare · Big Data</span></div>
+          </div>
+          <div class="meta-chip">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <div class="txt"><span class="k">Estado</span><span class="v">Propuesta de proyecto</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2 -->
+      <section class="slide" data-title="Problemática actual (AS-IS)">
+        <div class="eyebrow">Situación actual · AS-IS</div>
+        <h2 class="title">El proceso de préstamo <span class="em">no es eficiente</span></h2>
+        <p class="subtitle">
+          Las bibliotecas universitarias operan con procesos manuales que generan colas, errores y pérdida
+          de información. Estos son los datos reales del problema, medidos en operación diaria.
+        </p>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="num">3<small>min</small></div>
+            <div class="lbl">Tiempo promedio por préstamo</div>
+            <div class="desc">El bibliotecario escanea código de barras, teclea datos y emite papeleta manualmente.</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">5<small>%</small></div>
+            <div class="lbl">Tasa de error en registro</div>
+            <div class="desc">Errores de digitación, libros no registrados o préstamos mal asignados.</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">3<small>días</small></div>
+            <div class="lbl">Inventario físico completo</div>
+            <div class="desc">Se realiza 1-2 veces al año y consume días de trabajo manual.</div>
+          </div>
+          <div class="stat-card">
+            <div class="num">100<small>%</small></div>
+            <div class="lbl">Dependencia de personal</div>
+            <div class="desc">El proceso no funciona fuera del horario de atención de la biblioteca.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3 -->
+      <section class="slide" data-title="Solución propuesta (TO-BE)">
+        <div class="eyebrow">Propuesta · TO-BE</div>
+        <h2 class="title">Un sistema de <span class="em">autoservicio inteligente</span></h2>
+        <p class="subtitle">
+          El alumno realiza el préstamo en 3 simples pasos, sin intervención del bibliotecario.
+          El sistema valida y registra todo automáticamente en <strong>menos de 10 segundos</strong>.
+        </p>
+
+        <div class="flow">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="s-t">Identificación</div>
+            <div class="s-d">El alumno acerca su carnet NFC al lector del kiosco.</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="s-t">Selección del libro</div>
+            <div class="s-d">Acerca el libro con chip NFC al lector para registrarlo.</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="s-t">Confirmación</div>
+            <div class="s-d">El sistema valida, registra y muestra la fecha de devolución.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4 -->
+      <section class="slide" data-title="Comparativa AS-IS vs TO-BE">
+        <div class="eyebrow">Análisis comparativo</div>
+        <h2 class="title">AS-IS <span class="em">versus</span> TO-BE</h2>
+        <p class="subtitle">
+          Cada elemento del proceso se transforma. La comparativa evidencia la mejora integral.
+        </p>
+
+        <table class="compare">
+          <thead>
+            <tr>
+              <th style="width: 26%;">Elemento</th>
+              <th class="c-old" style="width: 37%;">AS-IS (actual)</th>
+              <th class="c-new" style="width: 37%;">TO-BE (con NFC)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Entrada</td><td><span class="tag-old">Barcode</span> + libro físico</td><td><span class="tag-new">NFC</span> carnet + libro</td></tr>
+            <tr><td>Actividades</td><td>Escanear, teclear datos, esperar</td><td>Acercar chip, confirmar</td></tr>
+            <tr><td>Actores</td><td>Alumno + bibliotecario</td><td>Alumno (autoservicio)</td></tr>
+            <tr><td>Controles</td><td>Manual (verificación humana)</td><td>Automático (validación del sistema)</td></tr>
+            <tr><td>Salida</td><td>Registro en Excel o sistema local</td><td>Dashboard en tiempo real (Cloudflare)</td></tr>
+            <tr><td>Tiempo</td><td>~3 minutos</td><td>~10 segundos</td></tr>
+            <tr><td>Errores</td><td>Frecuentes (digitación humana)</td><td>0% (automatizado)</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SLIDE 5 -->
+      <section class="slide" data-title="Arquitectura tecnológica">
+        <div class="eyebrow">Arquitectura tecnológica</div>
+        <h2 class="title">Un <span class="em">pipeline de datos</span> en tiempo real</h2>
+        <p class="subtitle">
+          Cada interacción del alumno con el sistema genera un dato. Ese dato viaja por una arquitectura
+          moderna, serverless y escalable, sin costos de infraestructura.
+        </p>
+
+        <div class="arch">
+          <div class="arch-row"><div class="badge">Captura</div><div class="txt">Lectores NFC (ACR122U) + chips NTAG216 en libros y NTAG215 en carnets de alumno.</div></div>
+          <div class="arch-row"><div class="badge">Procesamiento</div><div class="txt">Cloudflare Workers valida cada escaneo y aplica reglas de negocio en el edge.</div></div>
+          <div class="arch-row"><div class="badge">Almacenamiento</div><div class="txt">Analytics Engine (time-series) + KV Store para datos de alumnos y catálogo de libros.</div></div>
+          <div class="arch-row"><div class="badge">Análisis</div><div class="txt">SQL API para consultas agregadas, detección de patrones y predicciones de demanda.</div></div>
+          <div class="arch-row"><div class="badge">Visualización</div><div class="txt">Dashboard operativo para bibliotecarios + dashboard analítico para dirección.</div></div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6 -->
+      <section class="slide" data-title="Inversión inicial del prototipo">
+        <div class="eyebrow">Inversión inicial</div>
+        <h2 class="title">Prototipo 100% funcional por <span class="em">menos de S/ 400</span></h2>
+        <p class="subtitle">
+          Costos reales de mercado peruano. La infraestructura en la nube es gratuita en el nivel que usaremos.
+        </p>
+
+        <div class="invest-grid">
+          <div class="invest-card"><div class="name">Lector NFC ACR122U</div><div class="price">S/ 140</div><div class="unit">1 unidad · estándar industrial</div></div>
+          <div class="invest-card"><div class="name">Stickers NTAG216</div><div class="price">S/ 100</div><div class="unit">50 unidades · para libros</div></div>
+          <div class="invest-card"><div class="name">Tarjetas NTAG215</div><div class="price">S/ 70</div><div class="unit">20 unidades · para alumnos</div></div>
+          <div class="invest-card"><div class="name">Cloudflare Workers</div><div class="price free">Gratis</div><div class="unit">hasta 100k requests/día</div></div>
+          <div class="invest-card"><div class="name">Analytics Engine</div><div class="price free">Gratis</div><div class="unit">hasta 10M data points/mes</div></div>
+        </div>
+
+        <div class="invest-total">
+          <div class="lab">Inversión total del prototipo</div>
+          <div class="amt">~ S/ 310</div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7 -->
+      <section class="slide" data-title="Indicadores de impacto">
+        <div class="eyebrow">Indicadores de impacto</div>
+        <h2 class="title">Resultados <span class="em">medibles</span> desde el día 1</h2>
+        <p class="subtitle">
+          No son estimaciones. Son indicadores que se medirán con cronómetro y registros reales,
+          antes y después de la implementación.
+        </p>
+
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="k-lab">Tiempo de atención</div><div class="k-values"><span class="k-before">3 min</span><span class="k-arrow">→</span><span class="k-after">10 seg</span></div></div>
+          <div class="kpi-card"><div class="k-lab">Tasa de error</div><div class="k-values"><span class="k-before">5%</span><span class="k-arrow">→</span><span class="k-after">0%</span></div></div>
+          <div class="kpi-card"><div class="k-lab">Tiempo de inventario</div><div class="k-values"><span class="k-before">3 días</span><span class="k-arrow">→</span><span class="k-after">30 min</span></div></div>
+          <div class="kpi-card"><div class="k-lab">Horas liberadas / día</div><div class="k-values"><span class="k-before">0</span><span class="k-arrow">→</span><span class="k-after">4.5 h</span></div></div>
+        </div>
+      </section>
+
+      <!-- SLIDE 8 -->
+      <section class="slide" data-title="Valor de negocio">
+        <div class="eyebrow">Valor de negocio</div>
+        <h2 class="title">Más que un sistema: una <span class="em">ventaja competitiva</span></h2>
+        <p class="subtitle">
+          Seis dimensiones de valor que justifican la inversión y sostienen el retorno.
+        </p>
+
+        <div class="value-grid">
+          <div class="value-card">
+            <div class="v-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+            <div class="v-title">Eficiencia operativa</div>
+            <div class="v-desc">El personal deja de ser digitador y se convierte en gestor. Se liberan 4.5 horas diarias para tareas de mayor valor.</div>
+          </div>
+          <div class="value-card">
+            <div class="v-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg></div>
+            <div class="v-title">Decisiones basadas en datos</div>
+            <div class="v-desc">Sabes qué libros se prestan más, en qué horarios, por qué facultades. Las compras se basan en demanda real.</div>
+          </div>
+          <div class="value-card">
+            <div class="v-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M9 11l3 3L22 4"/></svg></div>
+            <div class="v-title">Mejor experiencia del alumno</div>
+            <div class="v-desc">Préstamo en 10 segundos, sin colas, con recordatorios automáticos de devolución.</div>
+          </div>
+          <div class="value-card">
+            <div class="v-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="v-title">Reducción de pérdidas</div>
+            <div class="v-desc">Trazabilidad completa: sabes quién tiene cada libro, desde cuándo y cuándo debe devolverlo.</div>
+          </div>
+          <div class="value-card">
+            <div class="v-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="v-title">Seguridad y control</div>
+            <div class="v-desc">Chips con protección por contraseña. Los datos de alumnos se guardan en la nube, no en la tarjeta física.</div>
+          </div>
+          <div class="value-card">
+            <div class="v-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l4-4 4 4 6-8"/></svg></div>
+            <div class="v-title">Escalabilidad inmediata</div>
+            <div class="v-desc">El mismo sistema sirve para 1 biblioteca o 100. Cero cambios de código al escalar a nuevas sedes.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 9 -->
+      <section class="slide" data-title="Escalabilidad multi-sector">
+        <div class="eyebrow">Escalabilidad</div>
+        <h2 class="title">Un sistema. <span class="em">Múltiples industrias.</span></h2>
+        <p class="subtitle">
+          La misma arquitectura NFC + Cloudflare + Dashboard se aplica a cualquier organización
+          que preste objetos o controle activos.
+        </p>
+
+        <div class="scale-grid">
+          <div class="scale-item"><div class="s-sector">Bibliotecas</div><div class="s-use">Préstamo de libros y control de inventario</div></div>
+          <div class="scale-item"><div class="s-sector">Coworkings</div><div class="s-use">Préstamo de laptops, proyectores y salas</div></div>
+          <div class="scale-item"><div class="s-sector">Clínicas</div><div class="s-use">Control de equipos médicos y mantenimiento</div></div>
+          <div class="scale-item"><div class="s-sector">Colegios</div><div class="s-use">Préstamo de tablets e instrumentos</div></div>
+          <div class="scale-item"><div class="s-sector">Gimnasios</div><div class="s-use">Préstamo de toallas, candados y accesorios</div></div>
+          <div class="scale-item"><div class="s-sector">Hoteles</div><div class="s-use">Control de amenities y equipos de préstamo</div></div>
+        </div>
+      </section>
+
+      <!-- SLIDE 10 -->
+      <section class="slide" data-title="Cronograma del proyecto">
+        <div class="eyebrow">Cronograma del proyecto</div>
+        <h2 class="title">De la idea al <span class="em">prototipo funcional</span> en 16 semanas</h2>
+
+        <div class="roadmap">
+          <div class="rm-item">
+            <div class="rm-week">Semana 5 · Avance 1</div>
+            <div class="rm-title">Planteamiento del proyecto</div>
+            <div class="rm-desc">Definición del problema, objetivos, justificación y alcance.</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-week">Semana 7 · Avance 2</div>
+            <div class="rm-title">Fundamentación teórica</div>
+            <div class="rm-desc">Antecedentes, FODA de la biblioteca, marco conceptual de gestión por procesos.</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-week">Semana 9 · Avance 3</div>
+            <div class="rm-title">Análisis AS-IS</div>
+            <div class="rm-desc">Mapeo del proceso actual. Compra de materiales NFC. Identificación de cuellos de botella.</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-week">Semana 11 · Avance 4</div>
+            <div class="rm-title">Indicadores y medición</div>
+            <div class="rm-desc">Definición de KPIs. Medición del proceso actual con datos reales.</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-week">Semana 13 · Avance 5</div>
+            <div class="rm-title">TO-BE + Prototipo</div>
+            <div class="rm-desc">Programación de chips, Worker en Cloudflare y dashboard operativo.</div>
+          </div>
+          <div class="rm-item">
+            <div class="rm-week">Semana 15-16 · Final</div>
+            <div class="rm-title">Informe + Demo en vivo</div>
+            <div class="rm-desc">Consolidación del informe, prototipo completo y sustentación con demo.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 11 -->
+      <section class="slide closing" data-title="Conclusión del proyecto">
+        <div class="eyebrow">Conclusión</div>
+        <div class="quote-big">
+          No estamos construyendo un sistema de biblioteca.<br>
+          Estamos <span class="em">rediseñando el proceso</span> para que el alumno<br>
+          obtenga su libro en <span class="em">10 segundos</span>,<br>
+          y para que la dirección tome decisiones<br>
+          basadas en <span class="em">datos reales</span>.
+        </div>
+        <div class="divider"></div>
+        <div class="sig">Chavez Huaman Adrian · Gestión de Procesos · 2026</div>
+      </section>
+
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <footer class="bottombar">
+      <button class="nav-btn" id="prevBtn" disabled>
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        Anterior
+      </button>
+
+      <div class="dots-nav" id="dotsNav"></div>
+
+      <button class="nav-btn" id="nextBtn">
+        Siguiente
+        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </footer>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <span class="t-dot"></span>
+  <span id="toastMsg">Acción realizada</span>
+</div>
+
+<script>
+(function() {
+  const app = document.getElementById('app');
+  const slides = document.querySelectorAll('.slide');
+  const navItems = document.querySelectorAll('.nav-item');
+  const total = slides.length;
+  let current = 0;
+
+  const crumbTitle = document.getElementById('crumbTitle');
+  const progressText = document.getElementById('progressText');
+  const progressFill = document.getElementById('progressFill');
+  const dotsNav = document.getElementById('dotsNav');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevTop = document.getElementById('prevTop');
+  const nextTop = document.getElementById('nextTop');
+  const menuToggle = document.getElementById('menuToggle');
+  const fullBtn = document.getElementById('fullBtn');
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.title = slides[i].dataset.title || `Slide ${i+1}`;
+    d.addEventListener('click', () => goTo(i));
+    dotsNav.appendChild(d);
+  });
+  const dots = dotsNav.querySelectorAll('.dot');
+
+  function showToast(msg) {
+    toastMsg.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total) return;
+    current = idx;
+
+    slides.forEach((s, i) => s.classList.toggle('active', i === current));
+    navItems.forEach((n, i) => n.classList.toggle('active', i === current));
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+    prevTop.disabled = current === 0;
+    nextTop.disabled = current === total - 1;
+
+    const pct = ((current + 1) / total) * 100;
+    progressFill.style.width = pct + '%';
+    progressText.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    crumbTitle.textContent = slides[current].dataset.title || '';
+
+    slides[current].scrollTop = 0;
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('click', prev);
+  nextTop.addEventListener('click', next);
+  prevTop.addEventListener('click', prev);
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      goTo(parseInt(item.dataset.slide));
+      if (window.innerWidth <= 900) app.classList.remove('mobile-open');
+    });
+  });
+
+  menuToggle.addEventListener('click', () => {
+    if (window.innerWidth <= 900) {
+      app.classList.toggle('mobile-open');
+    } else {
+      app.classList.toggle('collapsed');
+      showToast(app.classList.contains('collapsed') ? 'Menú compacto' : 'Menú expandido');
+    }
+  });
+
+  fullBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => {
+        fullBtn.classList.add('active');
+        showToast('Pantalla completa activada');
+      }).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => {
+        fullBtn.classList.remove('active');
+        showToast('Pantalla completa desactivada');
+      }).catch(() => {});
+    }
+  });
+
+  document.addEventListener('fullscreenchange', () => {
+    fullBtn.classList.toggle('active', !!document.fullscreenElement);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    switch(e.key) {
+      case 'ArrowRight':
+      case ' ':
+      case 'PageDown':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home':
+        e.preventDefault(); goTo(0); break;
+      case 'End':
+        e.preventDefault(); goTo(total - 1); break;
+      case 'f':
+      case 'F':
+        if (!e.ctrlKey && !e.metaKey) { e.preventDefault(); fullBtn.click(); }
+        break;
+      case 'm':
+      case 'M':
+        if (!e.ctrlKey && !e.metaKey) { e.preventDefault(); menuToggle.click(); }
+        break;
+      case 'Escape':
+        if (document.fullscreenElement) document.exitFullscreen();
+        break;
+    }
+  });
+
+  let tx = 0, ty = 0;
+  document.addEventListener('touchstart', (e) => {
+    tx = e.changedTouches[0].screenX;
+    ty = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    const dx = tx - e.changedTouches[0].screenX;
+    const dy = ty - e.changedTouches[0].screenY;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  goTo(0);
+})();
+</script>
+
+</body>
+</html>
